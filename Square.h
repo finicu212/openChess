@@ -18,6 +18,11 @@ public:
 		return pieceHere;
 	}
 
+	void setPiece(Piece* p)
+	{
+		pieceHere = p;
+	}
+
 	friend std::ostream& operator<<(std::ostream& os, const Square& sq)
 	{
 		Piece* p = sq.getPiece();
