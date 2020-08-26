@@ -4,14 +4,19 @@
 class Piece
 {
 public:
-	friend std::ostream& operator<<(std::ostream& os, const Piece& p)
+	char virtual getArt()
 	{
-		os << p.art;
-		return os;
+		return art;
 	}
 
-public:
-	char art = 'p';
+	Piece(char a) : art(a) {};
+
+private:
+	char art;
 };
 
-using Pawn = Piece;
+class Pawn : public Piece
+{
+public:
+	Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p') {};
+};
