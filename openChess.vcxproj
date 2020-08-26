@@ -141,6 +141,11 @@
   <ItemGroup>
     <ClCompile Include="openChess.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Piece.h" />
+    <ClInclude Include="Square.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
