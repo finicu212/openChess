@@ -37,7 +37,7 @@ Board::Board(bool playingAsWhite)
 	shadeSquare = !shadeSquare;
 	for (int i = 0; i < 8; i++)
 	{
-		board[1][i] = Square(shadeSquare, new Pawn());
+		board[1][i] = Square(shadeSquare, new Pawn(!playingAsWhite));
 		shadeSquare = !shadeSquare;
 	}
 
@@ -56,7 +56,7 @@ Board::Board(bool playingAsWhite)
 	// player pawns
 	for (int i = 0; i < 8; i++)
 	{
-		board[6][i] = Square(shadeSquare, new Pawn());
+		board[6][i] = Square(shadeSquare, new Pawn(playingAsWhite));
 		shadeSquare = !shadeSquare;
 	}
 
