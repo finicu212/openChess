@@ -8,6 +8,11 @@ public:
 	Square(bool s)				: shaded(s), pieceHere(nullptr) {};
 	Square() {};
 
+	bool isShaded() const
+	{
+		return shaded;
+	}
+
 private:
 	bool shaded;
 	Piece* pieceHere;
