@@ -26,15 +26,19 @@ public:
 Board::Board(bool playingAsWhite)
 {
 	// opposing player major pieces TODO
-	bool shadeSquare = false;
-	for (int i = 0; i < 8; i++)
-	{
-		board[0][i] = Square(shadeSquare);
-		shadeSquare = !shadeSquare;
-	}
+	bool shadeSquare = !playingAsWhite;
+	board[0][0] = Square(shadeSquare, new Rook(!playingAsWhite));
+	board[0][1] = Square(!shadeSquare, new Knight(!playingAsWhite));
+	board[0][2] = Square(shadeSquare, new Bishop(!playingAsWhite));
+	board[0][5] = Square(!shadeSquare, new Bishop(!playingAsWhite));
+	board[0][6] = Square(shadeSquare, new Knight(!playingAsWhite));
+	board[0][7] = Square(!shadeSquare, new Rook(!playingAsWhite));
+
+	board[0][3 + (1 && !playingAsWhite)] = Square(!shadeSquare, new King(!playingAsWhite));
+	board[0][4 - (1 && !playingAsWhite)] = Square(shadeSquare, new Queen(!playingAsWhite));
 
 	// opposing player pawns
-	shadeSquare = !shadeSquare;
+	//shadeSquare = true;
 	for (int i = 0; i < 8; i++)
 	{
 		board[1][i] = Square(shadeSquare, new Pawn(!playingAsWhite));
