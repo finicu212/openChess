@@ -71,15 +71,19 @@ Board::Board(bool playingAsWhite)
 
 std::ostream& operator<<(std::ostream& os, const Board& b)
 {
+	os << "  +---+---+---+---+---+---+---+---+\n";
+
 	for (int i = 0; i < 8; i++)
 	{
-		os << i << " ";
+		os << i + 1 << " ";
 		for (int j = 0; j < 8; j++)
 		{
 			os << "| " << b.squareAt(i, j) << " ";
 		}
 		os << "|\n";
+		os << "  +---+---+---+---+---+---+---+---+\n";
 	}
+	os << "    A   B   C   D   E   F   G   H\n";
 
 	return os;
 }
