@@ -13,7 +13,12 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);
 
-private:
+	bool shaded(int i, int j) const
+	{
+		return board[i][j].isShaded();
+	}
+
+public:
 	Square board[8][8];
 };
 
@@ -62,4 +67,26 @@ Board::Board(bool playingAsWhite)
 		board[7][i] = Square(shadeSquare);
 		shadeSquare = !shadeSquare;
 	}
+}
+
+std::ostream& operator<<(std::ostream& os, const Board& b)
+{
+	for (int i = 0; i < 8; i++)
+	{
+		os << i << " ";
+		for (int j = 0; j < 8; j++)
+		{
+			os << "| ";
+
+			if (b.shaded(i, j))
+				os << ".";
+			else
+				os << " ";
+
+			os << " ";
+		}
+		os << "|\n";
+	}
+
+	return os;
 }
