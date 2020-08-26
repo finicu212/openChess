@@ -22,7 +22,7 @@ public:
 	{
 		Piece* p = sq.getPiece();
 		if (p != nullptr)
-			os << *p;
+			os << p->getArt();
 		else if (sq.isShaded())
 			os << ".";
 		else
