@@ -13,19 +13,19 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);
 
-	Square squareAt(int i, int j) const
-	{
-		return board[i][j];
-	}
+	Square squareAt(int i, int j) const;
 
 public:
 	Square board[8][8];
 };
 
+Square Board::squareAt(int i, int j) const
+{
+	return board[i][j];
+}
 
 Board::Board(bool playingAsWhite)
 {
-	// opposing player major pieces TODO
 	bool shadeSquare = !playingAsWhite;
 	board[0][0] = Square(shadeSquare, new Rook(!playingAsWhite));
 	board[0][1] = Square(!shadeSquare, new Knight(!playingAsWhite));
@@ -64,13 +64,15 @@ Board::Board(bool playingAsWhite)
 		shadeSquare = !shadeSquare;
 	}
 
-	// player major pieces TODO
-	shadeSquare = !shadeSquare;
-	for (int i = 0; i < 8; i++)
-	{
-		board[7][i] = Square(shadeSquare);
-		shadeSquare = !shadeSquare;
-	}
+	board[7][0] = Square(!shadeSquare, new Rook(playingAsWhite));
+	board[7][1] = Square(shadeSquare, new Knight(playingAsWhite));
+	board[7][2] = Square(!shadeSquare, new Bishop(playingAsWhite));
+	board[7][5] = Square(shadeSquare, new Bishop(playingAsWhite));
+	board[7][6] = Square(!shadeSquare, new Knight(playingAsWhite));
+	board[7][7] = Square(shadeSquare, new Rook(playingAsWhite));
+
+	board[7][4 - (1 && playingAsWhite)] = Square(!shadeSquare, new King(playingAsWhite));
+	board[7][3 + (1 && playingAsWhite)] = Square(shadeSquare, new Queen(playingAsWhite));
 }
 
 std::ostream& operator<<(std::ostream& os, const Board& b)
