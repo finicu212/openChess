@@ -13,6 +13,24 @@ public:
 		return shaded;
 	}
 
+	Piece* getPiece() const
+	{
+		return pieceHere;
+	}
+
+	friend std::ostream& operator<<(std::ostream& os, const Square& sq)
+	{
+		Piece* p = sq.getPiece();
+		if (p != nullptr)
+			os << *p;
+		else if (sq.isShaded())
+			os << ".";
+		else
+			os << " ";
+
+		return os;
+	}
+
 private:
 	bool shaded;
 	Piece* pieceHere;

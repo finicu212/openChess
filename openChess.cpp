@@ -5,6 +5,5 @@ int main()
 {
     Board b(true);
 
-
     std::cout << b;
 }

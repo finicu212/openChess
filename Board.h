@@ -13,9 +13,9 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);
 
-	bool shaded(int i, int j) const
+	Square squareAt(int i, int j) const
 	{
-		return board[i][j].isShaded();
+		return board[i][j];
 	}
 
 public:
@@ -76,14 +76,7 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 		os << i << " ";
 		for (int j = 0; j < 8; j++)
 		{
-			os << "| ";
-
-			if (b.shaded(i, j))
-				os << ".";
-			else
-				os << " ";
-
-			os << " ";
+			os << "| " << b.squareAt(i, j) << " ";
 		}
 		os << "|\n";
 	}
