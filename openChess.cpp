@@ -3,8 +3,11 @@
 
 int main()
 {
-    Board b(true);
-    Piece* p = new Pawn(true);
+    char col;
+    std::cout << "Pick your color (w / b): ";
+    std::cin >> col;
+
+    Board b(col == 'w' ? true : false);
 
     std::cout << b;
 }
