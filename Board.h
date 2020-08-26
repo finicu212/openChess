@@ -26,7 +26,7 @@ public:
 Board::Board(bool playingAsWhite)
 {
 	// opposing player major pieces TODO
-	bool shadeSquare = true;
+	bool shadeSquare = false;
 	for (int i = 0; i < 8; i++)
 	{
 		board[0][i] = Square(shadeSquare);
@@ -48,12 +48,12 @@ Board::Board(bool playingAsWhite)
 		for (int j = 0; j < 8; j++)
 		{
 			board[i][j] = Square(shadeSquare);
+			shadeSquare = !shadeSquare;
 		}
 		shadeSquare = !shadeSquare;
 	}
 
 	// player pawns
-	shadeSquare = !shadeSquare;
 	for (int i = 0; i < 8; i++)
 	{
 		board[6][i] = Square(shadeSquare, new Pawn());
