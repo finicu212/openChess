@@ -16,6 +16,7 @@ public:
 	Square squareAt(int i, int j) const;
 
 public:
+	bool whiteSide;
 	Square board[8][8];
 };
 
@@ -24,7 +25,7 @@ Square Board::squareAt(int i, int j) const
 	return board[i][j];
 }
 
-Board::Board(bool playingAsWhite)
+Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
 {
 	bool shadeSquare = !playingAsWhite;
 	board[0][0] = Square(shadeSquare, new Rook(!playingAsWhite));
@@ -81,7 +82,7 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 
 	for (int i = 0; i < 8; i++)
 	{
-		os << i + 1 << " ";
+		os << (b.whiteSide ? (8 - i) : (i + 1)) << " ";
 		for (int j = 0; j < 8; j++)
 		{
 			os << "| " << b.squareAt(i, j) << " ";
