@@ -10,20 +10,29 @@ int gameOver(const Board& b)
     return 0;
 }
 
+bool isValidMove(Square& o, Square& d)
+{
+
+    return true;
+}
+
 bool move(Square& o, Square& d)
 {
-    d.setPiece(o.getPiece());
-    o.setPiece(nullptr);
+    if (isValidMove(o, d))
+    {
+        d.setPiece(o.getPiece());
+        o.setPiece(nullptr);
+    }
     return true;
 }
 
 int main()
 {
-    char col;
+    std::string col;
     std::cout << "Pick your color (w / b): ";
     std::cin >> col;
-
-    Board b(col == 'w' ? true : false);
+    Board b(col[0] == 'w' ? true : false);
+    //std::cin.ignore(256, ' ');
 
     while (!gameOver(b))
     {
