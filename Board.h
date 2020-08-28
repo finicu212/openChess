@@ -17,7 +17,7 @@ public:
 
 	char getArtAt(int i, int j) const;
 
-public:
+private:
 	bool whiteSide;
 	std::vector<std::vector<Piece*>> board;
 };
