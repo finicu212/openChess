@@ -10,21 +10,9 @@ int gameOver(const Board& b)
     return 0;
 }
 
-bool isValidMove(Square& o, Square& d)
+bool move(int srcRow, int srcCol, int destRow, int destCol)
 {
-    if (o.getPiece() == nullptr)
-        return false;
 
-    return o.getPiece().canMove(d);
-}
-
-bool move(Square& o, Square& d)
-{
-    if (isValidMove(o, d))
-    {
-        d.setPiece(o.getPiece());
-        o.setPiece(nullptr);
-    }
     return true;
 }
 
