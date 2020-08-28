@@ -35,7 +35,7 @@ char Board::getArtAt(int i, int j) const
 	if (pHere == nullptr)
 	{
 		// if i + j is even, then it's a shaded square. Reverse this if whiteSide is true
-		bool isShadedSquare = ((i + j) % 2 == 1 - whiteSide) ? true : false;
+		bool isShadedSquare = ((i + j) % 2 == 0 + whiteSide) ? true : false;
 		// print . if it's shaded
 		return isShadedSquare ? '.' : ' ';
 	}
