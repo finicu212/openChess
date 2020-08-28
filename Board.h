@@ -15,7 +15,7 @@ public:
 
 	Piece* pieceAt(int i, int j) const;
 
-	void printPiece(int i, int j) const;
+	char getArtAt(int i, int j) const;
 
 public:
 	bool whiteSide;
@@ -27,7 +27,7 @@ Piece* Board::pieceAt(int i, int j) const
 	return board[i][j];
 }
 
-void Board::printPiece(int i, int j) const
+char Board::getArtAt(int i, int j) const
 {
 	Piece* pHere = pieceAt(i, j);
 
@@ -37,11 +37,10 @@ void Board::printPiece(int i, int j) const
 		// if i + j is even, then it's a shaded square. Reverse this if whiteSide is true
 		bool isShadedSquare = ((i + j) % 2 == 0 + whiteSide) ? true : false;
 		// print . if it's shaded
-		std::cout << isShadedSquare ? ' ' : '.';
-		return;
+		return isShadedSquare ? ' ' : '.';
 	}
 
-	std::cout << pHere->getArt();
+	return pHere->getArt();
 }
 
 Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
