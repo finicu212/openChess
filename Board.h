@@ -37,7 +37,7 @@ char Board::getArtAt(int i, int j) const
 		// if i + j is even, then it's a shaded square. Reverse this if whiteSide is true
 		bool isShadedSquare = ((i + j) % 2 == 0 + whiteSide) ? true : false;
 		// print . if it's shaded
-		return isShadedSquare ? ' ' : '.';
+		return isShadedSquare ? '.' : ' ';
 	}
 
 	return pHere->getArt();
@@ -46,12 +46,10 @@ char Board::getArtAt(int i, int j) const
 Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
 {
 	// initialize the board with nullptrs
-	for (std::vector<Piece*> row : board)
+	board.resize(8);
+	for (int i = 0; i < 8; i++)
 	{
-		for (Piece* p : row)
-		{
-			p = nullptr;
-		}
+		board[i].resize(8, nullptr);
 	}
 
 	board[0][0] = new Rook(!playingAsWhite);
@@ -96,7 +94,7 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 		os << (b.whiteSide ? (8 - i) : (i + 1)) << " ";
 		for (int j = 0; j < 8; j++)
 		{
-			os << "| " << b.printPiece(i, j) << " ";
+			os << "| " << b.getArtAt(i, j) << " ";
 		}
 		os << "|\n";
 		os << "  +---+---+---+---+---+---+---+---+\n";
