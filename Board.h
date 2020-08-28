@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <vector>
 #include "Piece.h"
 
 class Board
@@ -16,7 +17,7 @@ public:
 
 public:
 	bool whiteSide;
-	Piece* board[8][8];
+	std::vector<std::vector<Piece*>> board;
 };
 
 Piece* Board::pieceAt(int i, int j) const
@@ -26,9 +27,13 @@ Piece* Board::pieceAt(int i, int j) const
 
 Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
 {
-	for (Piece* p : board)
+	// initialize the board with nullptrs
+	for (std::vector<Piece*> row : board)
 	{
-		p = nullptr;
+		for (Piece* p : row)
+		{
+			p = nullptr;
+		}
 	}
 
 	board[0][0] = new Rook(!playingAsWhite);
