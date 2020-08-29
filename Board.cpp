@@ -27,9 +27,9 @@ char Board::getArtAt(const Pos2D& pos) const
 	return pHere->getArt();
 }
 
-void Board::movePiece(const Move& move, const shared_ptr<Piece>& piece)
+void Board::movePiece(const Move& move)
 {
-	piece->setPos(move.dest());
+	Board::pieceAt(move.src())->setPos(move.dest());	 
 }
 
 Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)

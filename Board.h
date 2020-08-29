@@ -17,7 +17,7 @@ public:
 
 	char getArtAt(const Pos2D& pos) const;
 
-	void movePiece(const Move& move, const shared_ptr<Piece>& piece);
+	void movePiece(const Move& move);
 
 	Board(bool playingAsWhite);
 
