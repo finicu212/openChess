@@ -15,6 +15,8 @@ public:
 		pos = p;
 	}
 
+	virtual bool isValidMove(const Move& move) = 0;
+
 	Piece(char a) : art(a) {};
 
 private:
