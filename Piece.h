@@ -1,10 +1,6 @@
 #pragma once
 #include <string>
-
-struct Pos2D
-{
-	uint8_t x, y;
-};
+#include "Move.h"
 
 class Piece
 {
