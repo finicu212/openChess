@@ -1,19 +1,19 @@
 #include "Board.h"
 
-shared_ptr<Piece> Board::pieceAt(int i, int j) const
+shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 {
-	return board[i][j];
+	return board[pos.x][pos.y];
 }
 
-char Board::getArtAt(int i, int j) const
+char Board::getArtAt(const Pos2D& pos) const
 {
-	shared_ptr<Piece> pHere = pieceAt(i, j);
+	shared_ptr<Piece> pHere = pieceAt({ pos.x, pos.y });
 
 	// no piece here
 	if (pHere == nullptr)
 	{
 		// if i + j is even, then it's a shaded square
-		bool isShadedSquare = (i + j) % 2 == 0;
+		bool isShadedSquare = (pos.x + pos.y) % 2 == 0;
 
 		// print . if it's shaded
 		return isShadedSquare ? '.' : ' ';
@@ -88,7 +88,7 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 		os << (b.whiteSide ? (8 - i) : (i + 1)) << " ";
 		for (int j = 0; j < 8; j++)
 		{
-			os << "| " << b.getArtAt(i, j) << " ";
+			os << "| " << b.getArtAt({ i, j }) << " ";
 		}
 		os << "|\n";
 		os << "  +---+---+---+---+---+---+---+---+\n";
