@@ -22,6 +22,8 @@ public:
 
 	char getArtAt(int i, int j) const;
 
+	void movePiece(const Move& move, const shared_ptr<Piece>& piece);
+
 private:
 	bool whiteSide;
 	vector<vector<shared_ptr<Piece>>> board;
@@ -47,6 +49,11 @@ char Board::getArtAt(int i, int j) const
 	}
 
 	return pHere->getArt();
+}
+
+void Board::movePiece(const Move& move, const shared_ptr<Piece>& piece)
+{
+	piece->setPos(move.dest());
 }
 
 Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
