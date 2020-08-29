@@ -1,5 +1,14 @@
 #include "Move.h"
 
+Pos2D Pos2D::getPos2D(const std::string& posString)
+{
+	Pos2D newPos;
+	newPos.x = tolower(posString[0]) - 'a';
+	newPos.y = posString[1] - 49;
+
+	return newPos;
+}
+
 Move::Move() {};
 
 Move::Move(const Pos2D& org, const Pos2D& destination) : src_(org), dest_(destination) {}
@@ -17,11 +26,8 @@ Pos2D Move::dest() const
 Move Move::getMove(const std::string& s, const std::string& d)
 {
 	Move newMove;
-	newMove.src_.x = tolower(s[0]) - 'a';
-	newMove.src_.y = s[1] - 49;
-
-	newMove.dest_.x = tolower(d[0]) - 'a';
-	newMove.dest_.y = d[1] - 49;
+	newMove.src_ = Pos2D::getPos2D(s);
+	newMove.dest_ = Pos2D::getPos2D(d);
 
 	return newMove;
 }
