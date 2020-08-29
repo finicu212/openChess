@@ -4,15 +4,22 @@
 class Piece
 {
 public:
-	char virtual getArt()
+	char getArt()
 	{
 		return art;
+	}
+
+	void setPos(uint8_t i, uint8_t j)
+	{
+		row = i;
+		col = j;
 	}
 
 	Piece(char a) : art(a) {};
 
 private:
 	char art;
+	uint8_t row, col;
 };
 
 class Pawn : public Piece
