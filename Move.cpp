@@ -14,7 +14,7 @@ Pos2D Move::dest() const
 	return dest_;
 }
 
-Move Move::makeMove(const std::string& s, const std::string& d)
+Move Move::getMove(const std::string& s, const std::string& d)
 {
 	Move newMove;
 	newMove.src_.x = tolower(s[0]) - 'a';
