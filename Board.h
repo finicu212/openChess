@@ -91,12 +91,12 @@ Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
 	board[7][3 + (1 && playingAsWhite)] = shared_ptr<Piece>(new Queen(playingAsWhite));
 
 	// tell each piece what square they're on
-	for (int i = 0; i < 8; i++)
+	for (uint8_t i = 0; i < 8; i++)
 	{
-		for (int j = 0; j < 8; j++)
+		for (uint8_t j = 0; j < 8; j++)
 		{
 			if (board[i][j] != nullptr)
-				board[i][j]->setPos(i, j);
+				board[i][j]->setPos({ i, j });
 		} 
 	}
 }

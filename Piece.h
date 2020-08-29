@@ -1,6 +1,11 @@
 #pragma once
 #include <string>
 
+struct Pos2D
+{
+	uint8_t x, y;
+};
+
 class Piece
 {
 public:
@@ -9,17 +14,16 @@ public:
 		return art;
 	}
 
-	void setPos(uint8_t i, uint8_t j)
+	void setPos(Pos2D p)
 	{
-		row = i;
-		col = j;
+		pos = p;
 	}
 
 	Piece(char a) : art(a) {};
 
 private:
 	char art;
-	uint8_t row, col;
+	Pos2D pos;
 };
 
 class Pawn : public Piece
