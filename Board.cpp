@@ -7,7 +7,7 @@ shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 
 char Board::getArtAt(const Pos2D& pos) const
 {
-	shared_ptr<Piece> pHere = pieceAt({ pos.x, pos.y });
+	shared_ptr<Piece> pHere = pieceAt(pos);
 
 	// no piece here
 	if (pHere == nullptr)
