@@ -6,7 +6,7 @@ char Piece::getArt()
 	return art;
 }
 
-void Piece::setPos(Pos2D p)
+void Piece::setPos(const Pos2D& p)
 {
 	pos = p;
 }
