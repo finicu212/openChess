@@ -5,15 +5,9 @@
 class Piece
 {
 public:
-	char getArt()
-	{
-		return art;
-	}
+	char getArt();
 
-	void setPos(Pos2D p)
-	{
-		pos = p;
-	}
+	void setPos(Pos2D p);
 
 	virtual bool isValidMove(const Move& move) = 0;
 
@@ -27,65 +21,47 @@ private:
 class Pawn : public Piece
 {
 public:
-	Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p') {};
+	Pawn(bool isWhite);
 
-	bool isValidMove(const Move& move) override
-	{
-		return false;
-	}
+	bool isValidMove(const Move& move) override;
 };
 
 class Rook : public Piece
 {
 public:
-	Rook(bool isWhite) : Piece(isWhite ? 'R' : 'r') {};
+	Rook(bool isWhite);
 
-	bool isValidMove(const Move& move) override
-	{
-		return false;
-	}
+	bool isValidMove(const Move& move) override;
 };
 
 class Knight : public Piece
 {
 public:
-	Knight(bool isWhite) : Piece(isWhite ? 'N' : 'n') {};
+	Knight(bool isWhite);
 
-	bool isValidMove(const Move& move) override
-	{
-		return false;
-	}
+	bool isValidMove(const Move& move) override;
 };
 
 class Bishop : public Piece
 {
 public:
-	Bishop(bool isWhite) : Piece(isWhite ? 'B' : 'b') {};
+	Bishop(bool isWhite);
 
-	bool isValidMove(const Move& move) override
-	{
-		return false;
-	}
+	bool isValidMove(const Move& move) override;
 };
 
 class Queen : public Piece
 {
 public:
-	Queen(bool isWhite) : Piece(isWhite ? 'Q' : 'q') {};
+	Queen(bool isWhite);
 
-	bool isValidMove(const Move& move) override
-	{
-		return false;
-	}
+	bool isValidMove(const Move& move) override;
 };
 
 class King : public Piece
 {
 public:
-	King(bool isWhite) : Piece(isWhite ? 'K' : 'k') {};
+	King(bool isWhite);
 
-	bool isValidMove(const Move& move) override
-	{
-		return false;
-	}
+	bool isValidMove(const Move& move) override;
 };
