@@ -29,7 +29,13 @@ char Board::getArtAt(const Pos2D& pos) const
 
 void Board::movePiece(const Move& move)
 {
-	Board::pieceAt(move.src())->setPos(move.dest());	 
+	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	// reference there
+	setPiece(move.dest(), pieceHere);
+	// tell the piece where it will be
+	pieceAt(move.src())->setPos(move.dest());
+	// remove piece from here
+	setPiece(move.src(), shared_ptr<Piece>(nullptr));	
 }
 
 Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
