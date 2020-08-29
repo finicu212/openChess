@@ -10,12 +10,6 @@ int gameOver(const Board& b)
     return 0;
 }
 
-bool move(int srcRow, int srcCol, int destRow, int destCol)
-{
-
-    return true;
-}
-
 int main()
 {
     std::string col;
