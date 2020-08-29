@@ -3,9 +3,10 @@
 Pos2D Pos2D::getPos2D(const std::string& posString)
 {
 	Pos2D newPos;
-	newPos.x = tolower(posString[0]) - 'a';
-	newPos.y = posString[1] - 49;
+	newPos.y = tolower(posString[0]) - 'a';
+	newPos.x = posString[1] - 49;
 
+	// MAYBE REVERSE x AND y
 	return newPos;
 }
 

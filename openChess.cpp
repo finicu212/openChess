@@ -17,12 +17,10 @@ int main()
     std::cin >> col;
     Board b(col[0] == 'w' ? true : false);
 
-    while (!gameOver(b))
-    {
-        std::cout << b << "\nEnter your move:";
+    std::cout << b << '\n';
 
-        std::string move;
-        std::cin >> move;
-    }
-    
+    Move firstMove = Move::getMove("e2", "e4");
+    b.movePiece(firstMove);
+
+    std::cout << b << '\n';
 }
