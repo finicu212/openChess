@@ -2,7 +2,7 @@
 
 Move::Move() {};
 
-Move::Move(Pos2D org, Pos2D destination) : src_(org), dest_(destination) {}
+Move::Move(const Pos2D& org, const Pos2D& destination) : src_(org), dest_(destination) {}
 
 Pos2D Move::src() const
 {
@@ -14,7 +14,7 @@ Pos2D Move::dest() const
 	return dest_;
 }
 
-Move Move::makeMove(std::string s, std::string d)
+Move Move::makeMove(const std::string& s, const std::string& d)
 {
 	Move newMove;
 	newMove.src_.x = tolower(s[0]) - 'a';

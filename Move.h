@@ -10,7 +10,7 @@ class Move
 {
 public:
 	Move();
-	Move(Pos2D org, Pos2D destination);
+	Move(const Pos2D& org, const Pos2D& destination);
 
 	/// <summary>
 	/// Takes two strings and outputs readable data
@@ -18,7 +18,7 @@ public:
 	/// <param name="s"> - string that represents the origin square (ex: "e2")</param>
 	/// <param name="d"> - string that represents the destination square (ex: "e4")</param>
 	/// <returns>a Move object</returns>
-	static Move makeMove(std::string s, std::string d);
+	static Move makeMove(const std::string& s, const std::string& d);
 
 	Pos2D src() const;
 

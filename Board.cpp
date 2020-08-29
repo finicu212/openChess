@@ -1,19 +1,19 @@
 #include "Board.h"
 
-shared_ptr<Piece> Board::pieceAt(int i, int j) const
+shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 {
-	return board[i][j];
+	return board[pos.x][pos.y];
 }
 
-char Board::getArtAt(int i, int j) const
+char Board::getArtAt(const Pos2D& pos) const
 {
-	shared_ptr<Piece> pHere = pieceAt(i, j);
+	shared_ptr<Piece> pHere = pieceAt(pos);
 
 	// no piece here
 	if (pHere == nullptr)
 	{
 		// if i + j is even, then it's a shaded square
-		bool isShadedSquare = (i + j) % 2 == 0;
+		bool isShadedSquare = (pos.x + pos.y) % 2 == 0;
 
 		// print . if it's shaded
 		return isShadedSquare ? '.' : ' ';
@@ -31,7 +31,7 @@ Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
 {
 	// initialize the board with nullptrs
 	board.resize(8);
-	for (int i = 0; i < 8; i++)
+	for (uint8_t i = 0; i < 8; i++)
 	{
 		board[i].resize(8, shared_ptr<Piece>(nullptr));
 	}
@@ -47,13 +47,13 @@ Board::Board(bool playingAsWhite) : whiteSide(playingAsWhite)
 	board[0][4 - (1 && !playingAsWhite)] = shared_ptr<Piece>(new Queen(!playingAsWhite));
 
 	// opposing player pawns
-	for (int i = 0; i < 8; i++)
+	for (uint8_t i = 0; i < 8; i++)
 	{
 		board[1][i] = shared_ptr<Piece>(new Pawn(!playingAsWhite));
 	}
 
 	// player pawns
-	for (int i = 0; i < 8; i++)
+	for (uint8_t i = 0; i < 8; i++)
 	{
 		board[6][i] = shared_ptr<Piece>(new Pawn(playingAsWhite));
 	}
@@ -83,12 +83,12 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 {
 	os << "  +---+---+---+---+---+---+---+---+\n";
 
-	for (int i = 0; i < 8; i++)
+	for (uint8_t i = 0; i < 8; i++)
 	{
 		os << (b.whiteSide ? (8 - i) : (i + 1)) << " ";
-		for (int j = 0; j < 8; j++)
+		for (uint8_t j = 0; j < 8; j++)
 		{
-			os << "| " << b.getArtAt(i, j) << " ";
+			os << "| " << b.getArtAt({ i, j }) << " ";
 		}
 		os << "|\n";
 		os << "  +---+---+---+---+---+---+---+---+\n";

@@ -11,9 +11,9 @@ using std::shared_ptr;
 class Board
 {
 public:
-	shared_ptr<Piece> pieceAt(int i, int j) const;
+	shared_ptr<Piece> pieceAt(const Pos2D& pos) const;
 
-	char getArtAt(int i, int j) const;
+	char getArtAt(const Pos2D& pos) const;
 
 	void movePiece(const Move& move, const shared_ptr<Piece>& piece);
 
