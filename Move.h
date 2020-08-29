@@ -20,9 +20,9 @@ public:
 	/// <returns>a Move object</returns>
 	static Move makeMove(std::string s, std::string d);
 
-	Pos2D src();
+	Pos2D src() const;
 
-	Pos2D dest();
+	Pos2D dest() const;
 
 private:
 	Pos2D src_, dest_;
@@ -32,12 +32,12 @@ Move::Move() {};
 
 Move::Move(Pos2D org, Pos2D destination) : src_(org), dest_(destination) {}
 
-Pos2D Move::src()
+Pos2D Move::src() const
 { 
 	return src_; 
 }
 
-Pos2D Move::dest()
+Pos2D Move::dest() const
 { 
 	return dest_; 
 }
