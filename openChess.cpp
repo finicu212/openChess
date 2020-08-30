@@ -15,7 +15,8 @@ int main()
     std::string col;
     std::cout << "Pick your color (w / b): ";
     std::cin >> col;
-    Board b(col[0] == 'w' ? true : false);
+    g_playingAsWhite = col[0] == 'w' ? true : false;
+    Board b(g_playingAsWhite);
 
     std::cout << b << '\n';
 
