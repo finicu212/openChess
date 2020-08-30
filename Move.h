@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 
+extern bool g_playingAsWhite;
+
 struct Pos2D
 {
 	uint8_t x, y;
