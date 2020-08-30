@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Board.h"
 
+bool g_playingAsWhite;
+
 /// <summary> </summary>
 /// <param name="b"> - the chess board object </param>
 /// <returns> why the game ended. 1 = checkmate, 2 = no moves left, 3 = not enough material, TODO add more</returns>
@@ -16,7 +18,7 @@ int main()
     std::cout << "Pick your color (w / b): ";
     std::cin >> col;
     g_playingAsWhite = col[0] == 'w' ? true : false;
-    Board b(g_playingAsWhite);
+    Board b;
 
     std::cout << b << '\n';
 
