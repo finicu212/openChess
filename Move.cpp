@@ -15,6 +15,11 @@ Pos2D Pos2D::operator-(const Pos2D& pos)
 	return { x - pos.x, y - pos.y };
 }
 
+static Pos2D abs(const Pos2D& pos)
+{
+	return { pos.x < 0 ? -pos.x : pos.x, pos.y < 0 ? -pos.y : pos.y };
+}
+
 Move::Move() {};
 
 Move::Move(const Pos2D& org, const Pos2D& destination) : src_(org), dest_(destination) {}

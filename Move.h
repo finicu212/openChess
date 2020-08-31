@@ -9,6 +9,8 @@ struct Pos2D
 
 	static Pos2D getPos2D(const std::string& posString);
 
+	static Pos2D abs(const Pos2D& pos);
+
 	Pos2D operator-(const Pos2D& pos);
 };
 
