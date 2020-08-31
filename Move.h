@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 
+extern bool g_playingAsWhite;
+
 struct Pos2D
 {
 	uint8_t x, y;
@@ -21,6 +23,8 @@ public:
 	/// <param name="d"> - string that represents the destination square (ex: "e4")</param>
 	/// <returns>a Move object</returns>
 	static Move getMove(const std::string& s, const std::string& d);
+
+	Move invert() const;
 
 	Pos2D src() const;
 

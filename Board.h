@@ -19,11 +19,10 @@ public:
 
 	void movePiece(const Move& move);
 
-	Board(bool playingAsWhite);
+	Board();
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);
 
 private:
-	bool whiteSide;
 	vector<vector<shared_ptr<Piece>>> board;
 };
