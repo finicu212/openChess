@@ -2,6 +2,8 @@
 #include <string>
 #include "Move.h"
 
+extern Board g_board;
+
 class Piece
 {
 public:
