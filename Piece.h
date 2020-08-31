@@ -24,6 +24,9 @@ public:
 	Pawn(bool isWhite);
 
 	bool isValidMove(const Move& move) override;
+
+private:
+	bool hasMoved;
 };
 
 class Rook : public Piece

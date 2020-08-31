@@ -13,7 +13,7 @@ void Piece::setPos(const Pos2D& p)
 
 // ------- PAWN:
 
-Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p') {};
+Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p'), hasMoved(false) {};
 
 bool Pawn::isValidMove(const Move& move)
 {
