@@ -32,3 +32,10 @@ Move Move::getMove(const std::string& s, const std::string& d)
 
 	return newMove;
 }
+
+Move Move::invert() const
+{
+	Move newMove = *this;
+	newMove.src_.y = src_.y + (3.5 - src_.y) * 2;
+	return newMove;
+}	
