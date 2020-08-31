@@ -8,6 +8,8 @@ struct Pos2D
 	uint8_t x, y;
 
 	static Pos2D getPos2D(const std::string& posString);
+
+	Pos2D operator-(const Pos2D& pos);
 };
 
 class Move

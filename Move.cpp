@@ -10,6 +10,11 @@ Pos2D Pos2D::getPos2D(const std::string& posString)
 	return newPos;
 }
 
+Pos2D Pos2D::operator-(const Pos2D& pos)
+{
+	return { x - pos.x, y - pos.y };
+}
+
 Move::Move() {};
 
 Move::Move(const Pos2D& org, const Pos2D& destination) : src_(org), dest_(destination) {}
