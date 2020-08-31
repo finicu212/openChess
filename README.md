@@ -1,6 +1,12 @@
 # openChess
 C++ console chess
 
+Update on development status as of 2020-08-31:
+
+Player control, TBA: player turns, colored text for pieces
+
+-----
+
 Update on development status as of 2020-08-30:
 
 ![Image on 2020-08-30](https://i.imgur.com/4dBVKcS.png)
