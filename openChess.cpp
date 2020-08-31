@@ -23,6 +23,9 @@ int main()
     std::cout << b << '\n';
 
     Move firstMove = Move::getMove("e2", "e4");
+    if (g_playingAsWhite)
+        firstMove = firstMove.invert();
+
     b.movePiece(firstMove);
 
     std::cout << b << '\n';
