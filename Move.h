@@ -9,9 +9,11 @@ struct Pos2D
 
 	static Pos2D getPos2D(const std::string& posString);
 
-	static Pos2D abs(const Pos2D& pos);
+	Pos2D abs();
 
 	Pos2D operator-(const Pos2D& pos);
+
+	bool operator==(const Pos2D& pos);
 };
 
 class Move

@@ -15,9 +15,14 @@ Pos2D Pos2D::operator-(const Pos2D& pos)
 	return { x - pos.x, y - pos.y };
 }
 
-static Pos2D abs(const Pos2D& pos)
+bool Pos2D::operator==(const Pos2D& pos)
 {
-	return { pos.x < 0 ? -pos.x : pos.x, pos.y < 0 ? -pos.y : pos.y };
+	return (x == pos.x) && (y == pos.y);
+}
+
+Pos2D Pos2D::abs()
+{
+	return { x < 0 ? -x : x, y < 0 ? -y : y };
 }
 
 Move::Move() {};
