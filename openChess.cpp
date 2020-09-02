@@ -30,10 +30,6 @@ int main()
         std::cin >> plyMoveSrc >> plyMoveDest;
 
         Move move = Move::getMove(plyMoveSrc, plyMoveDest);
-        if (g_playingAsWhite)
-        {
-            move = move.invert();
-        }
 
         g_board.movePiece(move);
     }
