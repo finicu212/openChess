@@ -142,6 +142,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Move.cpp" />
+    <ClCompile Include="MoveValidation.cpp" />
     <ClCompile Include="openChess.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Pos2D.cpp" />
