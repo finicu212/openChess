@@ -75,8 +75,8 @@ Board::Board()
 	board[7][0] = shared_ptr<Piece>(new Rook(true));
 	board[7][1] = shared_ptr<Piece>(new Knight(true));
 	board[7][2] = shared_ptr<Piece>(new Bishop(true));
-	board[7][3] = shared_ptr<Piece>(new Queen(true));
-	board[7][4] = shared_ptr<Piece>(new King(true));
+	board[7][3] = shared_ptr<Piece>(new King(true));
+	board[7][4] = shared_ptr<Piece>(new Queen(true));
 	board[7][5] = shared_ptr<Piece>(new Bishop(true));
 	board[7][6] = shared_ptr<Piece>(new Knight(true));
 	board[7][7] = shared_ptr<Piece>(new Rook(true));
