@@ -28,8 +28,3 @@ Pos2D Pos2D::operator+(const Pos2D& pos)
 {
 	return { x + pos.x, y + pos.y };
 }
-
-Pos2D Pos2D::operator-()
-{
-	return { -x, -y };
-}
