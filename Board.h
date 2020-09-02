@@ -19,10 +19,17 @@ public:
 
 	void movePiece(const Move& move);
 
+	bool isValidMove(const Move& move);
+
+	void setPlayingPerspective(bool asWhite);
+
+	bool getPerspective();
+
 	Board();
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);
 
 private:
 	vector<vector<shared_ptr<Piece>>> board;
+	bool playingAsWhite = true;
 };

@@ -1,7 +1,5 @@
 #include "Board.h"
 
-extern bool g_playingAsWhite;
-
 shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 {
 	return board[pos.x][pos.y];
@@ -38,6 +36,16 @@ void Board::movePiece(const Move& move)
 	pieceAt(move.src())->setPos(move.dest());
 	// remove piece from here
 	setPiece(move.src(), shared_ptr<Piece>(nullptr));	
+}
+
+void Board::setPlayingPerspective(bool asWhite)
+{
+	playingAsWhite = asWhite;
+}
+
+bool Board::getPerspective()
+{
+	return playingAsWhite;
 }
 
 Board::Board()
@@ -98,10 +106,10 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		os << (g_playingAsWhite ? (8 - i) : (i + 1)) << " ";
+		os << (b.playingAsWhite ? (8 - i) : (i + 1)) << " ";
 		for (uint8_t j = 0; j < 8; j++)
 		{
-			os << "| " << b.getArtAt( Pos2D(g_playingAsWhite ? (7 - i) : i, j) ) << " ";
+			os << "| " << b.getArtAt( Pos2D(b.playingAsWhite ? (7 - i) : i, j) ) << " ";
 		}
 		os << "|\n";
 		os << "  +---+---+---+---+---+---+---+---+\n";

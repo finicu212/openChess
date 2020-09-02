@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Board.h"
 
-bool g_playingAsWhite;
 Board g_board;
 
 /// <summary> </summary>
@@ -18,7 +17,7 @@ int main()
     std::string col;
     std::cout << "Pick your color (w / b): ";
     std::cin >> col;
-    g_playingAsWhite = col[0] == 'w' ? true : false;
+    g_board.setPlayingPerspective(col[0] == 'w');
 
     bool whitesTurn = true;
     while (!gameOver(g_board))
