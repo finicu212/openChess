@@ -1,7 +1,5 @@
 #include "Board.h"
 
-extern bool g_playingAsWhite;
-
 shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 {
 	return board[pos.x][pos.y];
@@ -40,6 +38,16 @@ void Board::movePiece(const Move& move)
 	setPiece(move.src(), shared_ptr<Piece>(nullptr));	
 }
 
+void Board::setPlayingPerspective(bool asWhite)
+{
+	playingAsWhite = asWhite;
+}
+
+bool Board::getPerspective()
+{
+	return playingAsWhite;
+}
+
 Board::Board()
 {
 	// initialize the board with nullptrs
@@ -49,37 +57,37 @@ Board::Board()
 		board[i].resize(8, shared_ptr<Piece>(nullptr));
 	}
 
-	board[0][0] = shared_ptr<Piece>(new Rook(!g_playingAsWhite));
-	board[0][1] = shared_ptr<Piece>(new Knight(!g_playingAsWhite));
-	board[0][2] = shared_ptr<Piece>(new Bishop(!g_playingAsWhite));
-	board[0][5] = shared_ptr<Piece>(new Bishop(!g_playingAsWhite));
-	board[0][6] = shared_ptr<Piece>(new Knight(!g_playingAsWhite));
-	board[0][7] = shared_ptr<Piece>(new Rook(!g_playingAsWhite));
+	// white major pieces
+	board[0][0] = shared_ptr<Piece>(new Rook(true));
+	board[0][1] = shared_ptr<Piece>(new Knight(true));
+	board[0][2] = shared_ptr<Piece>(new Bishop(true));
+	board[0][3] = shared_ptr<Piece>(new Queen(true));
+	board[0][4] = shared_ptr<Piece>(new King(true));
+	board[0][5] = shared_ptr<Piece>(new Bishop(true));
+	board[0][6] = shared_ptr<Piece>(new Knight(true));
+	board[0][7] = shared_ptr<Piece>(new Rook(true));
 
-	board[0][3 + (1 && !g_playingAsWhite)] = shared_ptr<Piece>(new King(!g_playingAsWhite));
-	board[0][4 - (1 && !g_playingAsWhite)] = shared_ptr<Piece>(new Queen(!g_playingAsWhite));
-
-	// opposing player pawns
+	// white pawns
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[1][i] = shared_ptr<Piece>(new Pawn(!g_playingAsWhite));
+		board[1][i] = shared_ptr<Piece>(new Pawn(true));
 	}
 
-	// player pawns
+	// black pawns
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[6][i] = shared_ptr<Piece>(new Pawn(g_playingAsWhite));
+		board[6][i] = shared_ptr<Piece>(new Pawn(false));
 	}
 
-	board[7][0] = shared_ptr<Piece>(new Rook(g_playingAsWhite));
-	board[7][1] = shared_ptr<Piece>(new Knight(g_playingAsWhite));
-	board[7][2] = shared_ptr<Piece>(new Bishop(g_playingAsWhite));
-	board[7][5] = shared_ptr<Piece>(new Bishop(g_playingAsWhite));
-	board[7][6] = shared_ptr<Piece>(new Knight(g_playingAsWhite));
-	board[7][7] = shared_ptr<Piece>(new Rook(g_playingAsWhite));
-
-	board[7][4 - (1 && g_playingAsWhite)] = shared_ptr<Piece>(new King(g_playingAsWhite));
-	board[7][3 + (1 && g_playingAsWhite)] = shared_ptr<Piece>(new Queen(g_playingAsWhite));
+	// black major pieces
+	board[7][0] = shared_ptr<Piece>(new Rook(false));
+	board[7][1] = shared_ptr<Piece>(new Knight(false));
+	board[7][2] = shared_ptr<Piece>(new Bishop(false));
+	board[7][3] = shared_ptr<Piece>(new Queen(false));
+	board[7][4] = shared_ptr<Piece>(new King(false));
+	board[7][5] = shared_ptr<Piece>(new Bishop(false));
+	board[7][6] = shared_ptr<Piece>(new Knight(false));
+	board[7][7] = shared_ptr<Piece>(new Rook(false));
 
 	// tell each piece what square they're on
 	for (uint8_t i = 0; i < 8; i++)
@@ -98,10 +106,10 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		os << (g_playingAsWhite ? (8 - i) : (i + 1)) << " ";
+		os << (b.playingAsWhite ? (8 - i) : (i + 1)) << " ";
 		for (uint8_t j = 0; j < 8; j++)
 		{
-			os << "| " << b.getArtAt({ i, j }) << " ";
+			os << "| " << b.getArtAt( Pos2D(b.playingAsWhite ? (7 - i) : i, j) ) << " ";
 		}
 		os << "|\n";
 		os << "  +---+---+---+---+---+---+---+---+\n";

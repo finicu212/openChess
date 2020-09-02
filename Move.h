@@ -18,8 +18,6 @@ public:
 	/// <returns>a Move object</returns>
 	static Move getMove(const std::string& s, const std::string& d);
 
-	Move invert() const;
-
 	Pos2D src() const;
 
 	Pos2D dest() const;
