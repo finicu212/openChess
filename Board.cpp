@@ -101,7 +101,7 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 		os << (g_playingAsWhite ? (8 - i) : (i + 1)) << " ";
 		for (uint8_t j = 0; j < 8; j++)
 		{
-			os << "| " << b.getArtAt({ i, j }) << " ";
+			os << "| " << b.getArtAt( Pos2D(g_playingAsWhite ? i : 7 - i, j) ) << " ";
 		}
 		os << "|\n";
 		os << "  +---+---+---+---+---+---+---+---+\n";
