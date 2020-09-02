@@ -144,11 +144,13 @@
     <ClCompile Include="Move.cpp" />
     <ClCompile Include="openChess.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Pos2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="Move.h" />
     <ClInclude Include="Piece.h" />
+    <ClInclude Include="Pos2D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

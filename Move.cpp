@@ -1,15 +1,5 @@
 #include "Move.h"
 
-Pos2D Pos2D::getPos2D(const std::string& posString)
-{
-	Pos2D newPos;
-	newPos.y = tolower(posString[0]) - 'a';
-	newPos.x = posString[1] - 49;
-
-	// MAYBE REVERSE x AND y
-	return newPos;
-}
-
 Move::Move() {};
 
 Move::Move(const Pos2D& org, const Pos2D& destination) : src_(org), dest_(destination) {}
