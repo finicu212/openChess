@@ -12,17 +12,19 @@ void Piece::setPos(const Pos2D& p)
 	pos = p;
 }
 
-Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p') {};
+Piece::Piece(char a, bool w) : art(a), isWhite(w) {};
 
-Rook::Rook(bool isWhite) : Piece(isWhite ? 'R' : 'r') {};
+Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p', isWhite) {};
 
-Knight::Knight(bool isWhite) : Piece(isWhite ? 'N' : 'n') {};
+Rook::Rook(bool isWhite) : Piece(isWhite ? 'R' : 'r', isWhite) {};
 
-Bishop::Bishop(bool isWhite) : Piece(isWhite ? 'B' : 'b') {};
+Knight::Knight(bool isWhite) : Piece(isWhite ? 'N' : 'n', isWhite) {};
 
-Queen::Queen(bool isWhite) : Piece(isWhite ? 'Q' : 'q') {};
+Bishop::Bishop(bool isWhite) : Piece(isWhite ? 'B' : 'b', isWhite) {};
 
-King::King(bool isWhite) : Piece(isWhite ? 'K' : 'k') {};
+Queen::Queen(bool isWhite) : Piece(isWhite ? 'Q' : 'q', isWhite) {};
+
+King::King(bool isWhite) : Piece(isWhite ? 'K' : 'k', isWhite) {};
 
 
 extern Board g_board;

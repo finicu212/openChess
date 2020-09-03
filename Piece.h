@@ -11,10 +11,11 @@ public:
 
 	virtual bool isValidMove(const Move& move) = 0;
 
-	Piece(char a) : art(a) {};
+	Piece(char a, bool w);
 
 private:
 	char art;
+	bool isWhite;
 	Pos2D pos;
 };
 
