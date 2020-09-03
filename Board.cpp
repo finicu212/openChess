@@ -33,7 +33,8 @@ void Board::movePiece(const Move& move)
 	// reference there
 	setPiece(move.dest(), pieceHere);
 	// tell the piece where it will be
-	pieceAt(move.src())->setPos(move.dest());
+	pieceHere->setPos(move.dest());
+	pieceHere->setHasMoved(true);
 	// remove piece from here
 	setPiece(move.src(), shared_ptr<Piece>(nullptr));	
 }

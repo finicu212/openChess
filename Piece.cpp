@@ -41,7 +41,8 @@ bool Pawn::isValidMove(const Move& move)
 
 	// basic move (1 square)
 	if (move.intention() == 0 &&
-		moveDelta == Pos2D(isWhite ? 1 : -1, 0))
+		(moveDelta == Pos2D(isWhite ? 1 : -1, 0) ||
+		moveDelta == Pos2D(isWhite ? 2 : -2, 0)))
 	{
 		return true;
 	}
