@@ -42,11 +42,8 @@ bool Board::isValidMove(const Move& move)
 {
 	if (move.intention() == 255)
 		return false;
-
-	if (pieceAt(move.src())->isValidMove(move))
-		return true;
-
-	return false;
+	
+	return pieceAt(move.src())->isValidMove(move);
 }
 
 void Board::setPlayingPerspective(bool asWhite)
