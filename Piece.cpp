@@ -57,8 +57,8 @@ bool Pawn::isValidMove(const Move& move)
 
 	// capture move
 	if (move.intention() == 1 &&
-		moveDelta.x == isWhite ? 1 : -1 &&
-		abs(moveDelta.y) == 1)
+		(moveDelta.x == (isWhite ? 1 : -1)) &&
+		((moveDelta.y == 1) || (moveDelta.y == -1)))
 	{
 		return true;
 	}
