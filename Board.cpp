@@ -55,7 +55,7 @@ uint8_t Board::getIntention(const Move& move)
 		return 255;
 
 	// can't move on friendly pieces
-	if (getArtAt(move.src()) == getArtAt(move.dest()))
+	if (pieceAt(move.src())->getColor() == pieceAt(move.dest())->getColor())
 		return 255;
 	else
 		return 1; // capturing move
