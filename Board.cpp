@@ -73,6 +73,8 @@ uint8_t Board::getIntention(const Move& move)
 		return 255;
 	else
 		return 1; // capturing move
+
+	// TODO: return 2 for castling, 3 for en passant pawn capture.
 }
 
 Board::Board()
