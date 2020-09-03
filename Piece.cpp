@@ -32,6 +32,21 @@ King::King(bool isWhite) : Piece(isWhite ? 'K' : 'k', isWhite) {};
 
 bool Pawn::isValidMove(const Move& move)
 {
+	Pos2D moveDelta = move.dest() - move.src();
+
+	if (move.intention() == 0 &&
+		moveDelta == Pos2D(isWhite ? 1 : -1, 0))
+	{
+		return true;
+	}
+
+	if (move.intention() == 0 &&
+		moveDelta.x == isWhite ? 1 : -1 &&
+		abs(moveDelta.y) == 1)
+	{
+		return true;
+	}
+
 	return false;
 }
 

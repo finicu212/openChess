@@ -15,7 +15,7 @@ public:
 
 	Piece(char a, bool w);
 
-private:
+protected:
 	char art;
 	bool isWhite;
 	Pos2D pos;
