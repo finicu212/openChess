@@ -7,6 +7,8 @@ class Piece
 public:
 	char getArt();
 
+	bool getColor();
+
 	void setPos(const Pos2D& p);
 
 	virtual bool isValidMove(const Move& move) = 0;

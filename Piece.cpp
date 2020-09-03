@@ -7,6 +7,11 @@ char Piece::getArt()
 	return art;
 }
 
+bool Piece::getColor()
+{
+	return isWhite;
+}
+
 void Piece::setPos(const Pos2D& p)
 {
 	pos = p;
