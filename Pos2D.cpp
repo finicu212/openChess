@@ -2,7 +2,7 @@
 
 Pos2D::Pos2D() : x(0), y(0) {};
 
-Pos2D::Pos2D(uint8_t x, uint8_t y) : x(x), y(y) {};
+Pos2D::Pos2D(int8_t x, int8_t y) : x(x), y(y) {};
 
 Pos2D Pos2D::getPos2D(const std::string& posString)
 {

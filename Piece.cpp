@@ -16,6 +16,11 @@ void Piece::setPos(const Pos2D& p)
 	pos = p;
 }
 
+void Piece::setHasMoved(bool m)
+{
+	hasMoved = m;
+}
+
 Piece::Piece(char a, bool w) : art(a), isWhite(w) {};
 
 Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p', isWhite) {};
@@ -32,6 +37,42 @@ King::King(bool isWhite) : Piece(isWhite ? 'K' : 'k', isWhite) {};
 
 bool Pawn::isValidMove(const Move& move)
 {
+	Pos2D moveDelta = move.dest() - move.src();
+
+	// basic moves
+	if (move.intention() == 0)
+	{
+		// 1 square
+		if (moveDelta == Pos2D(isWhite ? 1 : -1, 0))
+		{
+			return true;
+		}
+
+		// 2 squares
+		if (moveDelta == Pos2D(isWhite ? 2 : -2, 0) && !hasMoved)
+		{
+			return true;
+		}
+	}
+
+	// capture move
+	if (move.intention() == 1 &&
+		(moveDelta.x == (isWhite ? 1 : -1)) &&
+		((moveDelta.y == 1) || (moveDelta.y == -1)))
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool Pawn::canPromote()
+{
+	if (pos.x == 0 || pos.x == 7)
+	{
+		return true;
+	}
+
 	return false;
 }
 
@@ -56,6 +97,32 @@ bool Queen::isValidMove(const Move& move)
 }
 
 bool King::isValidMove(const Move& move)
+{
+	return false;
+}
+
+
+bool Rook::canPromote()
+{
+	return false;
+}
+
+bool Knight::canPromote()
+{
+	return false;
+}
+
+bool Bishop::canPromote()
+{
+	return false;
+}
+
+bool Queen::canPromote()
+{
+	return false;
+}
+
+bool King::canPromote()
 {
 	return false;
 }

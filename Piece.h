@@ -11,13 +11,17 @@ public:
 
 	void setPos(const Pos2D& p);
 
+	void setHasMoved(bool m);
+
 	virtual bool isValidMove(const Move& move) = 0;
+
+	virtual bool canPromote() = 0;
 
 	Piece(char a, bool w);
 
-private:
+protected:
 	char art;
-	bool isWhite;
+	bool isWhite, hasMoved = false;
 	Pos2D pos;
 };
 
@@ -27,6 +31,8 @@ public:
 	Pawn(bool isWhite);
 
 	bool isValidMove(const Move& move) override;
+
+	bool canPromote() override;
 };
 
 class Rook : public Piece
@@ -35,6 +41,8 @@ public:
 	Rook(bool isWhite);
 
 	bool isValidMove(const Move& move) override;
+
+	bool canPromote() override;
 };
 
 class Knight : public Piece
@@ -43,6 +51,8 @@ public:
 	Knight(bool isWhite);
 
 	bool isValidMove(const Move& move) override;
+
+	bool canPromote() override;
 };
 
 class Bishop : public Piece
@@ -51,6 +61,8 @@ public:
 	Bishop(bool isWhite);
 
 	bool isValidMove(const Move& move) override;
+
+	bool canPromote() override;
 };
 
 class Queen : public Piece
@@ -59,6 +71,8 @@ public:
 	Queen(bool isWhite);
 
 	bool isValidMove(const Move& move) override;
+
+	bool canPromote() override;
 };
 
 class King : public Piece
@@ -67,4 +81,6 @@ public:
 	King(bool isWhite);
 
 	bool isValidMove(const Move& move) override;
+
+	bool canPromote() override;
 };
