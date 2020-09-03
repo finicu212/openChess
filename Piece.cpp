@@ -66,6 +66,16 @@ bool Pawn::isValidMove(const Move& move)
 	return false;
 }
 
+bool Pawn::canPromote()
+{
+	if (pos.x == 0 || pos.x == 7)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 bool Rook::isValidMove(const Move& move)
 {
 	return false;
