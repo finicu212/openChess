@@ -26,5 +26,15 @@ public:
 
 private:
 	Pos2D src_, dest_;
-	uint8_t intention_ = 255; // 255 = invalid move, non-initialized
+	uint8_t intention_ = 255;
+	/*
+	*	Table of intentions:
+	*	
+	*	0 - Standard, no capture move
+	*   1 - Capturing move
+	*	2 - Castling move
+	*	3 - En Passant move
+	*
+	*	255 - Invalid move (to be checked in Board::isValidMove)
+	*/
 };
