@@ -65,15 +65,14 @@ uint8_t Board::getIntention(const Move& move)
 	if (pieceAt(move.src()) == shared_ptr<Piece>(nullptr))
 		return 255;
 
+	if (pieceAt(move.dest()) == shared_ptr<Piece>(nullptr))
+		return 0; // standard move
+
 	// can't move on friendly pieces
 	if (pieceAt(move.src())->getColor() == pieceAt(move.dest())->getColor())
 		return 255;
 	else
 		return 1; // capturing move
-
-	if (pieceAt(move.dest()) == shared_ptr<Piece>(nullptr))
-		return 0; // standard move
-
 }
 
 Board::Board()
