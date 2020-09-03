@@ -16,6 +16,11 @@ void Piece::setPos(const Pos2D& p)
 	pos = p;
 }
 
+void Piece::setHasMoved(bool m)
+{
+	hasMoved = m;
+}
+
 Piece::Piece(char a, bool w) : art(a), isWhite(w) {};
 
 Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p', isWhite) {};

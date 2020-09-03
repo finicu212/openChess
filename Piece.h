@@ -11,13 +11,15 @@ public:
 
 	void setPos(const Pos2D& p);
 
+	void setHasMoved(bool m);
+
 	virtual bool isValidMove(const Move& move) = 0;
 
 	Piece(char a, bool w);
 
 protected:
 	char art;
-	bool isWhite;
+	bool isWhite, hasMoved = false;
 	Pos2D pos;
 };
 
