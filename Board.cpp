@@ -38,6 +38,17 @@ void Board::movePiece(const Move& move)
 	setPiece(move.src(), shared_ptr<Piece>(nullptr));	
 }
 
+bool Board::isValidMove(const Move& move)
+{
+	if (move.intention() == 255)
+		return false;
+
+	if (pieceAt(move.src())->isValidMove(move))
+		return true;
+
+	return false;
+}
+
 void Board::setPlayingPerspective(bool asWhite)
 {
 	playingAsWhite = asWhite;
