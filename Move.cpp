@@ -14,6 +14,16 @@ Pos2D Move::dest() const
 	return dest_;
 }
 
+uint8_t Move::intention() const
+{
+	return intention_;
+}
+
+void Move::setIntention(uint8_t intent)
+{
+	intention_ = intent;
+}
+
 Move Move::getMove(const std::string& s, const std::string& d)
 {
 	Move newMove;

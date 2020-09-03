@@ -20,6 +20,11 @@ public:
 
 	Pos2D dest() const;
 
+	uint8_t intention() const;
+
+	void setIntention(uint8_t intent);
+
 private:
 	Pos2D src_, dest_;
+	uint8_t intention_ = 255; // 255 = invalid move, non-initialized
 };
