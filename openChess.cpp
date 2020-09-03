@@ -24,11 +24,16 @@ int main()
     {
         std::cout << g_board << '\n';
 
-        std::string plyMoveSrc, plyMoveDest;
-        std::cout << "Enter move (src_square dest_square):";
-        std::cin >> plyMoveSrc >> plyMoveDest;
+        Move move;
+        do
+        {
+            std::string plyMoveSrc, plyMoveDest;
+            std::cout << "Enter valid move (src_square dest_square):";
+            std::cin >> plyMoveSrc >> plyMoveDest;
 
-        Move move = Move::getMove(plyMoveSrc, plyMoveDest);
+            move = Move::getMove(plyMoveSrc, plyMoveDest);
+            move.setIntention(g_board.getIntention(move));
+        } while (!g_board.isValidMove(move));
 
         g_board.movePiece(move);
     }
