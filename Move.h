@@ -2,8 +2,6 @@
 #include <iostream>
 #include "Pos2D.h"
 
-extern bool g_playingAsWhite;
-
 class Move
 {
 public:
