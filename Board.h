@@ -25,6 +25,8 @@ public:
 
 	bool getPerspective();
 
+	uint8_t getIntention(const Move& move);
+
 	Board();
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);

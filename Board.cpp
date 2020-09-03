@@ -15,7 +15,7 @@ char Board::getArtAt(const Pos2D& pos) const
 	shared_ptr<Piece> pHere = pieceAt(pos);
 
 	// no piece here
-	if (pHere == nullptr)
+	if (pHere == shared_ptr<Piece>(nullptr))
 	{
 		// if i + j is even, then it's a shaded square
 		bool isShadedSquare = (pos.x + pos.y) % 2 == 0;
@@ -46,6 +46,23 @@ void Board::setPlayingPerspective(bool asWhite)
 bool Board::getPerspective()
 {
 	return playingAsWhite;
+}
+
+uint8_t Board::getIntention(const Move& move)
+{
+	// can't move empty squares
+	if (pieceAt(move.src()) == shared_ptr<Piece>(nullptr))
+		return 255;
+
+	// can't move on friendly pieces
+	if (getArtAt(move.src()) == getArtAt(move.dest()))
+		return 255;
+	else
+		return 1; // capturing move
+
+	if (pieceAt(move.dest()) == shared_ptr<Piece>(nullptr))
+		return 0; // standard move
+
 }
 
 Board::Board()
@@ -94,7 +111,7 @@ Board::Board()
 	{
 		for (uint8_t j = 0; j < 8; j++)
 		{
-			if (board[i][j] != nullptr)
+			if (board[i][j] != shared_ptr<Piece>(nullptr))
 				board[i][j]->setPos({ i, j });
 		}
 	}
