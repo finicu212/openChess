@@ -3,11 +3,11 @@
 
 struct Pos2D
 {
-	uint8_t x, y;
+	int8_t x, y;
 
 	Pos2D();
 
-	Pos2D(uint8_t x, uint8_t y);
+	Pos2D(int8_t x, int8_t y);
 
 	static Pos2D getPos2D(const std::string& posString);
 

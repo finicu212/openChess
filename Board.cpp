@@ -117,9 +117,9 @@ Board::Board()
 	board[7][7] = shared_ptr<Piece>(new Rook(false));
 
 	// tell each piece what square they're on
-	for (uint8_t i = 0; i < 8; i++)
+	for (int8_t i = 0; i < 8; i++)
 	{
-		for (uint8_t j = 0; j < 8; j++)
+		for (int8_t j = 0; j < 8; j++)
 		{
 			if (board[i][j] != shared_ptr<Piece>(nullptr))
 				board[i][j]->setPos({ i, j });
