@@ -1,6 +1,5 @@
 #pragma once
-#include "Board.h"
-// including Board.h to reference global variable g_board which is of type Board
+#include "Piece.h"
 
 char Piece::getArt()
 {
@@ -30,9 +29,6 @@ Bishop::Bishop(bool isWhite) : Piece(isWhite ? 'B' : 'b', isWhite) {};
 Queen::Queen(bool isWhite) : Piece(isWhite ? 'Q' : 'q', isWhite) {};
 
 King::King(bool isWhite) : Piece(isWhite ? 'K' : 'k', isWhite) {};
-
-
-extern Board g_board;
 
 bool Pawn::isValidMove(const Move& move)
 {
