@@ -100,3 +100,29 @@ bool King::isValidMove(const Move& move)
 {
 	return false;
 }
+
+
+bool Rook::canPromote()
+{
+	return false;
+}
+
+bool Knight::canPromote()
+{
+	return false;
+}
+
+bool Bishop::canPromote()
+{
+	return false;
+}
+
+bool Queen::canPromote()
+{
+	return false;
+}
+
+bool King::canPromote()
+{
+	return false;
+}

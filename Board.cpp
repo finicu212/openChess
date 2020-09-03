@@ -30,11 +30,17 @@ char Board::getArtAt(const Pos2D& pos) const
 void Board::movePiece(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
-	// reference there
-	setPiece(move.dest(), pieceHere);
 	// tell the piece where it will be
 	pieceHere->setPos(move.dest());
 	pieceHere->setHasMoved(true);
+
+	if (pieceHere->canPromote())
+	{
+		pieceHere = shared_ptr<Piece>(new Queen(pieceHere->getColor()));
+	}
+
+	// reference there
+	setPiece(move.dest(), pieceHere);
 	// remove piece from here
 	setPiece(move.src(), shared_ptr<Piece>(nullptr));	
 }
