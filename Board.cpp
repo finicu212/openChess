@@ -36,7 +36,7 @@ void Board::movePiece(const Move& move)
 
 	if (pieceHere->canPromote())
 	{
-		pieceHere = shared_ptr<Piece>(new Queen(pieceHere->getColor()));
+		pieceHere = make_shared<Queen>(pieceHere->getColor());
 	}
 
 	// reference there
@@ -91,36 +91,36 @@ Board::Board()
 	}
 
 	// white major pieces
-	board[0][0] = shared_ptr<Piece>(new Rook(true));
-	board[0][1] = shared_ptr<Piece>(new Knight(true));
-	board[0][2] = shared_ptr<Piece>(new Bishop(true));
-	board[0][3] = shared_ptr<Piece>(new Queen(true));
-	board[0][4] = shared_ptr<Piece>(new King(true));
-	board[0][5] = shared_ptr<Piece>(new Bishop(true));
-	board[0][6] = shared_ptr<Piece>(new Knight(true));
-	board[0][7] = shared_ptr<Piece>(new Rook(true));
+	board[0][0] = make_shared<Rook>(true);
+	board[0][1] = make_shared<Knight>(true);
+	board[0][2] = make_shared<Bishop>(true);
+	board[0][3] = make_shared<Queen>(true);
+	board[0][4] = make_shared<King>(true);
+	board[0][5] = make_shared<Bishop>(true);
+	board[0][6] = make_shared<Knight>(true);
+	board[0][7] = make_shared<Rook>(true);
 
 	// white pawns
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[1][i] = shared_ptr<Piece>(new Pawn(true));
+		board[1][i] = make_shared<Pawn>(true);
 	}
 
 	// black pawns
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[6][i] = shared_ptr<Piece>(new Pawn(false));
+		board[6][i] = make_shared<Pawn>(false);
 	}
 
 	// black major pieces
-	board[7][0] = shared_ptr<Piece>(new Rook(false));
-	board[7][1] = shared_ptr<Piece>(new Knight(false));
-	board[7][2] = shared_ptr<Piece>(new Bishop(false));
-	board[7][3] = shared_ptr<Piece>(new Queen(false));
-	board[7][4] = shared_ptr<Piece>(new King(false));
-	board[7][5] = shared_ptr<Piece>(new Bishop(false));
-	board[7][6] = shared_ptr<Piece>(new Knight(false));
-	board[7][7] = shared_ptr<Piece>(new Rook(false));
+	board[7][0] = make_shared<Rook>(false);
+	board[7][1] = make_shared<Knight>(false);
+	board[7][2] = make_shared<Bishop>(false);
+	board[7][3] = make_shared<Queen>(false);
+	board[7][4] = make_shared<King>(false);
+	board[7][5] = make_shared<Bishop>(false);
+	board[7][6] = make_shared<Knight>(false);
+	board[7][7] = make_shared<Rook>(false);
 
 	// tell each piece what square they're on
 	for (int8_t i = 0; i < 8; i++)
