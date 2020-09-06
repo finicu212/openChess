@@ -1,27 +1,32 @@
 #pragma once
 #include "Piece.h"
 
-char Piece::getArt()
+char Piece::art()
 {
-	return art;
+	return art_;
 }
 
-bool Piece::getColor()
+bool Piece::isWhite()
 {
-	return isWhite;
+	return isWhite_;
+}
+
+Pos2D Piece::pos()
+{
+	return pos_;
 }
 
 void Piece::setPos(const Pos2D& p)
 {
-	pos = p;
+	pos_ = p;
 }
 
 void Piece::setHasMoved(bool m)
 {
-	hasMoved = m;
+	hasMoved_ = m;
 }
 
-Piece::Piece(char a, bool w) : art(a), isWhite(w) {};
+Piece::Piece(char a, bool w) : art_(a), isWhite_(w) {};
 
 Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p', isWhite) {};
 
@@ -43,13 +48,13 @@ bool Pawn::isValidMove(const Move& move)
 	if (move.intention() == 0)
 	{
 		// 1 square
-		if (moveDelta == Pos2D(isWhite ? 1 : -1, 0))
+		if (moveDelta == Pos2D(isWhite_ ? 1 : -1, 0))
 		{
 			return true;
 		}
 
 		// 2 squares
-		if (moveDelta == Pos2D(isWhite ? 2 : -2, 0) && !hasMoved)
+		if (moveDelta == Pos2D(isWhite_ ? 2 : -2, 0) && !hasMoved_)
 		{
 			return true;
 		}
@@ -57,7 +62,7 @@ bool Pawn::isValidMove(const Move& move)
 
 	// capture move
 	if (move.intention() == 1 &&
-		(moveDelta.x == (isWhite ? 1 : -1)) &&
+		(moveDelta.x == (isWhite_ ? 1 : -1)) &&
 		((moveDelta.y == 1) || (moveDelta.y == -1)))
 	{
 		return true;
@@ -68,7 +73,7 @@ bool Pawn::isValidMove(const Move& move)
 
 bool Pawn::canPromote()
 {
-	return (pos.x == 0 || pos.x == 7);
+	return (pos_.x == 0 || pos_.x == 7);
 }
 
 bool Rook::isValidMove(const Move& move)

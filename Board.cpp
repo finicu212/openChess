@@ -24,7 +24,7 @@ char Board::getArtAt(const Pos2D& pos) const
 		return isShadedSquare ? '.' : ' ';
 	}
 
-	return pHere->getArt();
+	return pHere->art();
 }
 
 void Board::movePiece(const Move& move)
@@ -36,7 +36,7 @@ void Board::movePiece(const Move& move)
 
 	if (pieceHere->canPromote())
 	{
-		pieceHere = make_shared<Queen>(pieceHere->getColor());
+		pieceHere = make_shared<Queen>(pieceHere->isWhite());
 	}
 
 	// reference there
@@ -73,7 +73,7 @@ uint8_t Board::getIntention(const Move& move)
 		return 0; // standard move
 
 	// can't move on friendly pieces
-	if (pieceAt(move.src())->getColor() == pieceAt(move.dest())->getColor())
+	if (pieceAt(move.src())->isWhite() == pieceAt(move.dest())->isWhite())
 		return 255;
 	else
 		return 1; // capturing move
