@@ -5,9 +5,11 @@
 class Piece
 {
 public:
-	char getArt();
+	char art();
 
-	bool getColor();
+	bool isWhite();
+
+	Pos2D pos();
 
 	void setPos(const Pos2D& p);
 
@@ -20,9 +22,9 @@ public:
 	Piece(char a, bool w);
 
 protected:
-	char art;
-	bool isWhite, hasMoved = false;
-	Pos2D pos;
+	char art_;
+	bool isWhite_, hasMoved_ = false;
+	Pos2D pos_;
 };
 
 class Pawn : public Piece
