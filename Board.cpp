@@ -15,7 +15,7 @@ char Board::getArtAt(const Pos2D& pos) const
 	shared_ptr<Piece> pHere = pieceAt(pos);
 
 	// no piece here
-	if (pHere == shared_ptr<Piece>(nullptr))
+	if (pHere == nullptr)
 	{
 		// if i + j is even, then it's a shaded square
 		bool isShadedSquare = (pos.x + pos.y) % 2 == 0;
@@ -42,7 +42,7 @@ void Board::movePiece(const Move& move)
 	// reference there
 	setPiece(move.dest(), pieceHere);
 	// remove piece from here
-	setPiece(move.src(), shared_ptr<Piece>(nullptr));	
+	setPiece(move.src(), nullptr);	
 }
 
 bool Board::isValidMove(const Move& move)
@@ -66,10 +66,10 @@ bool Board::getPerspective()
 uint8_t Board::getIntention(const Move& move)
 {
 	// can't move empty squares
-	if (pieceAt(move.src()) == shared_ptr<Piece>(nullptr))
+	if (pieceAt(move.src()) == nullptr)
 		return 255;
 
-	if (pieceAt(move.dest()) == shared_ptr<Piece>(nullptr))
+	if (pieceAt(move.dest()) == nullptr)
 		return 0; // standard move
 
 	// can't move on friendly pieces
@@ -87,7 +87,7 @@ Board::Board()
 	board.resize(8);
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[i].resize(8, shared_ptr<Piece>(nullptr));
+		board[i].resize(8, nullptr);
 	}
 
 	// white major pieces
@@ -127,7 +127,7 @@ Board::Board()
 	{
 		for (int8_t j = 0; j < 8; j++)
 		{
-			if (board[i][j] != shared_ptr<Piece>(nullptr))
+			if (board[i][j] != nullptr)
 				board[i][j]->setPos({ i, j });
 		}
 	}
