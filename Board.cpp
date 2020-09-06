@@ -65,9 +65,44 @@ bool Board::playingAsWhite()
 
 uint8_t Board::findIntention(const Move& move)
 {
+	Pos2D moveDelta = (move.dest() - move.src()).abs();
 	// can't move empty squares
 	if (pieceAt(move.src()) == nullptr)
 		return 255;
+
+	// bishop-like movement
+	if (moveDelta.x == moveDelta.y)
+	{
+		for (int i = 1; i < moveDelta.x; i++)
+		{
+			if (board_[move.src().x + i][move.src().y + i] != nullptr)
+			{
+				return 254; // trying to jump over a piece with a bishop
+			}
+		}
+	}
+
+	// rook-like movement
+	if (moveDelta.x == 0)
+	{
+		for (int i = 1; i < moveDelta.y; i++)
+		{
+			if (board_[move.src().x][move.src().y + i] != nullptr)
+			{
+				return 253; // trying to jump over a piece with a rook (y axis)
+			}
+		}
+	}
+	else if (moveDelta.y == 0) // double square initial pawn move is also prevented from jumping pieces here
+	{
+		for (int i = 1; i < moveDelta.x; i++)
+		{
+			if (board_[move.src().x + i][move.src().y] != nullptr)
+			{
+				return 253; // trying to jump over a piece with a rook (x axis)
+			}
+		}
+	}
 
 	if (pieceAt(move.dest()) == nullptr)
 		return 0; // standard move
