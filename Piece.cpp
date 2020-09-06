@@ -68,12 +68,7 @@ bool Pawn::isValidMove(const Move& move)
 
 bool Pawn::canPromote()
 {
-	if (pos.x == 0 || pos.x == 7)
-	{
-		return true;
-	}
-
-	return false;
+	return (pos.x == 0 || pos.x == 7) && canPromote;
 }
 
 bool Rook::isValidMove(const Move& move)
