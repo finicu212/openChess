@@ -105,7 +105,8 @@ bool Queen::isValidMove(const Move& move)
 
 bool King::isValidMove(const Move& move)
 {
-	return false;
+	Pos2D moveDelta = (move.dest() - move.src()).abs();
+	return moveDelta.x < 2 && moveDelta.y < 2;
 }
 
 
