@@ -83,7 +83,9 @@ bool Rook::isValidMove(const Move& move)
 
 bool Knight::isValidMove(const Move& move)
 {
-	return false;
+	Pos2D moveDelta = (move.dest() - move.src()).abs();
+
+	return (moveDelta.x == 1 && moveDelta.y == 2) || (moveDelta.x == 2 && moveDelta.y == 1);
 }
 
 bool Bishop::isValidMove(const Move& move)
