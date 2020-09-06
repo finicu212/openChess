@@ -25,6 +25,8 @@ public:
 
 	bool playingAsWhite();
 
+	bool whitesTurn();
+
 	uint8_t findIntention(const Move& move);
 
 	Board();
