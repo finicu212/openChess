@@ -65,7 +65,7 @@ bool Board::playingAsWhite()
 
 uint8_t Board::findIntention(const Move& move)
 {
-	Pos2D moveDelta = (move.dest() - move.src()).abs();
+	Pos2D moveDelta = move.dest() - move.src();
 	// can't move empty squares
 	if (pieceAt(move.src()) == nullptr)
 		return 255;
@@ -73,7 +73,9 @@ uint8_t Board::findIntention(const Move& move)
 	// bishop-like movement
 	if (moveDelta.x == moveDelta.y)
 	{
-		for (int i = 1; i < moveDelta.x; i++)
+		// TODO: make a method or something to make this thing readable
+		// (its a for loop that goes the direction of the delta)
+		for (int i = moveDelta.x > 0 ? 1 : -1; moveDelta.x > 0 ? (i < moveDelta.x) : (i > moveDelta.x); moveDelta.x > 0 ? i++ : i--)
 		{
 			if (board_[move.src().x + i][move.src().y + i] != nullptr)
 			{
@@ -85,7 +87,7 @@ uint8_t Board::findIntention(const Move& move)
 	// rook-like movement
 	if (moveDelta.x == 0)
 	{
-		for (int i = 1; i < moveDelta.y; i++)
+		for (int i = moveDelta.x > 0 ? 1 : -1; moveDelta.y > 0 ? (i < moveDelta.y) : (i > moveDelta.y) ; moveDelta.y > 0 ? i++ : i--)
 		{
 			if (board_[move.src().x][move.src().y + i] != nullptr)
 			{
@@ -95,7 +97,7 @@ uint8_t Board::findIntention(const Move& move)
 	}
 	else if (moveDelta.y == 0) // double square initial pawn move is also prevented from jumping pieces here
 	{
-		for (int i = 1; i < moveDelta.x; i++)
+		for (int i = moveDelta.x > 0 ? 1 : -1; moveDelta.x > 0 ? (i < moveDelta.x) : (i > moveDelta.x); moveDelta.x > 0 ? i++ : i--)
 		{
 			if (board_[move.src().x + i][move.src().y] != nullptr)
 			{
