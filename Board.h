@@ -25,6 +25,8 @@ public:
 
 	bool playingAsWhite();
 
+	bool whitesTurn();
+
 	uint8_t findIntention(const Move& move);
 
 	Board();
@@ -33,5 +35,5 @@ public:
 
 private:
 	vector<vector<shared_ptr<Piece>>> board_;
-	bool playingAsWhite_ = true;
+	bool playingAsWhite_ = true, whitesTurn_ = true;;
 };

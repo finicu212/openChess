@@ -19,7 +19,6 @@ int main()
     std::cin >> col;
     g_board.setPlayingAsWhite(col[0] == 'w');
 
-    bool whitesTurn = true;
     while (!gameOver(g_board))
     {
         std::cout << g_board << '\n';
@@ -28,7 +27,7 @@ int main()
         do
         {
             std::string plyMoveSrc, plyMoveDest;
-            std::cout << "Enter valid move (src_square dest_square):";
+            std::cout << "Enter valid move for " << (g_board.whitesTurn() ? "white" : "black") << " (src_square dest_square):";
             std::cin >> plyMoveSrc >> plyMoveDest;
 
             move = Move::getMove(plyMoveSrc, plyMoveDest);

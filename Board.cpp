@@ -42,12 +42,17 @@ void Board::movePiece(const Move& move)
 	// reference there
 	setPiece(move.dest(), pieceHere);
 	// remove piece from here
-	setPiece(move.src(), nullptr);	
+	setPiece(move.src(), nullptr);
+	
+	whitesTurn_ = !whitesTurn_;
 }
 
 bool Board::isValidMove(const Move& move)
 {
 	if (move.intention() == 255)
+		return false;
+
+	if (pieceAt(move.src())->isWhite() != whitesTurn_)
 		return false;
 	
 	return pieceAt(move.src())->isValidMove(move);
@@ -61,6 +66,11 @@ void Board::setPlayingAsWhite(bool asWhite)
 bool Board::playingAsWhite()
 {
 	return playingAsWhite_;
+}
+
+bool Board::whitesTurn()
+{
+	return whitesTurn_;
 }
 
 template <typename T> int sgn(T val) {
