@@ -17,7 +17,7 @@ int main()
     std::string col;
     std::cout << "Pick your color (w / b): ";
     std::cin >> col;
-    g_board.setPlayingPerspective(col[0] == 'w');
+    g_board.setPlayingAsWhite(col[0] == 'w');
 
     bool whitesTurn = true;
     while (!gameOver(g_board))
@@ -32,7 +32,7 @@ int main()
             std::cin >> plyMoveSrc >> plyMoveDest;
 
             move = Move::getMove(plyMoveSrc, plyMoveDest);
-            move.setIntention(g_board.getIntention(move));
+            move.setIntention(g_board.findIntention(move));
         } while (!g_board.isValidMove(move));
 
         g_board.movePiece(move);

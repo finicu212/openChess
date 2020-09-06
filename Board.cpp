@@ -2,12 +2,12 @@
 
 shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 {
-	return board[pos.x][pos.y];
+	return board_[pos.x][pos.y];
 }
 
 void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 {
-	board[pos.x][pos.y] = piece;
+	board_[pos.x][pos.y] = piece;
 }
 
 char Board::getArtAt(const Pos2D& pos) const
@@ -24,7 +24,7 @@ char Board::getArtAt(const Pos2D& pos) const
 		return isShadedSquare ? '.' : ' ';
 	}
 
-	return pHere->getArt();
+	return pHere->art();
 }
 
 void Board::movePiece(const Move& move)
@@ -36,7 +36,7 @@ void Board::movePiece(const Move& move)
 
 	if (pieceHere->canPromote())
 	{
-		pieceHere = make_shared<Queen>(pieceHere->getColor());
+		pieceHere = make_shared<Queen>(pieceHere->isWhite());
 	}
 
 	// reference there
@@ -53,17 +53,17 @@ bool Board::isValidMove(const Move& move)
 	return pieceAt(move.src())->isValidMove(move);
 }
 
-void Board::setPlayingPerspective(bool asWhite)
+void Board::setPlayingAsWhite(bool asWhite)
 {
-	playingAsWhite = asWhite;
+	playingAsWhite_ = asWhite;
 }
 
-bool Board::getPerspective()
+bool Board::playingAsWhite()
 {
-	return playingAsWhite;
+	return playingAsWhite_;
 }
 
-uint8_t Board::getIntention(const Move& move)
+uint8_t Board::findIntention(const Move& move)
 {
 	// can't move empty squares
 	if (pieceAt(move.src()) == nullptr)
@@ -73,7 +73,7 @@ uint8_t Board::getIntention(const Move& move)
 		return 0; // standard move
 
 	// can't move on friendly pieces
-	if (pieceAt(move.src())->getColor() == pieceAt(move.dest())->getColor())
+	if (pieceAt(move.src())->isWhite() == pieceAt(move.dest())->isWhite())
 		return 255;
 	else
 		return 1; // capturing move
@@ -83,52 +83,52 @@ uint8_t Board::getIntention(const Move& move)
 
 Board::Board()
 {
-	// initialize the board with nullptrs
-	board.resize(8);
+	// initialize the board_ with nullptrs
+	board_.resize(8);
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[i].resize(8, nullptr);
+		board_[i].resize(8, nullptr);
 	}
 
 	// white major pieces
-	board[0][0] = make_shared<Rook>(true);
-	board[0][1] = make_shared<Knight>(true);
-	board[0][2] = make_shared<Bishop>(true);
-	board[0][3] = make_shared<Queen>(true);
-	board[0][4] = make_shared<King>(true);
-	board[0][5] = make_shared<Bishop>(true);
-	board[0][6] = make_shared<Knight>(true);
-	board[0][7] = make_shared<Rook>(true);
+	board_[0][0] = make_shared<Rook>(true);
+	board_[0][1] = make_shared<Knight>(true);
+	board_[0][2] = make_shared<Bishop>(true);
+	board_[0][3] = make_shared<Queen>(true);
+	board_[0][4] = make_shared<King>(true);
+	board_[0][5] = make_shared<Bishop>(true);
+	board_[0][6] = make_shared<Knight>(true);
+	board_[0][7] = make_shared<Rook>(true);
 
 	// white pawns
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[1][i] = make_shared<Pawn>(true);
+		board_[1][i] = make_shared<Pawn>(true);
 	}
 
 	// black pawns
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		board[6][i] = make_shared<Pawn>(false);
+		board_[6][i] = make_shared<Pawn>(false);
 	}
 
 	// black major pieces
-	board[7][0] = make_shared<Rook>(false);
-	board[7][1] = make_shared<Knight>(false);
-	board[7][2] = make_shared<Bishop>(false);
-	board[7][3] = make_shared<Queen>(false);
-	board[7][4] = make_shared<King>(false);
-	board[7][5] = make_shared<Bishop>(false);
-	board[7][6] = make_shared<Knight>(false);
-	board[7][7] = make_shared<Rook>(false);
+	board_[7][0] = make_shared<Rook>(false);
+	board_[7][1] = make_shared<Knight>(false);
+	board_[7][2] = make_shared<Bishop>(false);
+	board_[7][3] = make_shared<Queen>(false);
+	board_[7][4] = make_shared<King>(false);
+	board_[7][5] = make_shared<Bishop>(false);
+	board_[7][6] = make_shared<Knight>(false);
+	board_[7][7] = make_shared<Rook>(false);
 
 	// tell each piece what square they're on
 	for (int8_t i = 0; i < 8; i++)
 	{
 		for (int8_t j = 0; j < 8; j++)
 		{
-			if (board[i][j] != nullptr)
-				board[i][j]->setPos({ i, j });
+			if (board_[i][j] != nullptr)
+				board_[i][j]->setPos({ i, j });
 		}
 	}
 }
@@ -139,10 +139,10 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		os << (b.playingAsWhite ? (8 - i) : (i + 1)) << " ";
+		os << (b.playingAsWhite_ ? (8 - i) : (i + 1)) << " ";
 		for (uint8_t j = 0; j < 8; j++)
 		{
-			os << "| " << b.getArtAt( Pos2D(b.playingAsWhite ? (7 - i) : i, j) ) << " ";
+			os << "| " << b.getArtAt( Pos2D(b.playingAsWhite_ ? (7 - i) : i, j) ) << " ";
 		}
 		os << "|\n";
 		os << "  +---+---+---+---+---+---+---+---+\n";

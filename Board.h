@@ -21,17 +21,17 @@ public:
 
 	bool isValidMove(const Move& move);
 
-	void setPlayingPerspective(bool asWhite);
+	void setPlayingAsWhite(bool asWhite);
 
-	bool getPerspective();
+	bool playingAsWhite();
 
-	uint8_t getIntention(const Move& move);
+	uint8_t findIntention(const Move& move);
 
 	Board();
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);
 
 private:
-	vector<vector<shared_ptr<Piece>>> board;
-	bool playingAsWhite = true;
+	vector<vector<shared_ptr<Piece>>> board_;
+	bool playingAsWhite_ = true;
 };
