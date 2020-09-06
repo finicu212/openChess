@@ -33,5 +33,5 @@ public:
 
 private:
 	vector<vector<shared_ptr<Piece>>> board_;
-	bool playingAsWhite_ = true;
+	bool playingAsWhite_ = true, whitesTurn_ = true;;
 };
