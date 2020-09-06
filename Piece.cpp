@@ -73,7 +73,11 @@ bool Pawn::canPromote()
 
 bool Rook::isValidMove(const Move& move)
 {
-	return false;
+	if (move.intention() == 253)
+		return false;
+
+	Pos2D moveDelta = (move.dest() - move.src()).abs();
+	return moveDelta.x == 0 || moveDelta.y == 0;
 }
 
 bool Knight::isValidMove(const Move& move)
