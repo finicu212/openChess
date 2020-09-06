@@ -95,7 +95,12 @@ bool Bishop::isValidMove(const Move& move)
 
 bool Queen::isValidMove(const Move& move)
 {
-	return false;
+	// tried jumping over piece like a bishop or a rook
+	if (move.intention() == 254 || move.intention() == 253)
+		return false;
+
+	Pos2D moveDelta = (move.dest() - move.src()).abs();
+	return moveDelta.x == 0 || moveDelta.y == 0 || (moveDelta.x == moveDelta.y);
 }
 
 bool King::isValidMove(const Move& move)
