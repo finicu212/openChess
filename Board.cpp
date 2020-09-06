@@ -79,7 +79,7 @@ uint8_t Board::findIntention(const Move& move)
 	{
 		// TODO: make a method or something to make this thing readable
 		// (its a for loop that goes the direction of the delta)
-		for (int i = sgn(moveDelta.x); i < abs(moveDelta.x); i += sgn(moveDelta.x))
+		for (int i = sgn(moveDelta.x); abs(i) < abs(moveDelta.x); i += sgn(moveDelta.x))
 		{
 			if (board_[move.src().x + i][move.src().y + i] != nullptr)
 			{
@@ -91,7 +91,7 @@ uint8_t Board::findIntention(const Move& move)
 	// rook-like movement
 	if (moveDelta.x == 0)
 	{
-		for (int i = sgn(moveDelta.y); i < abs(moveDelta.y); i += sgn(moveDelta.y))
+		for (int i = sgn(moveDelta.y); abs(i) < abs(moveDelta.y); i += sgn(moveDelta.y))
 		{
 			if (board_[move.src().x][move.src().y + i] != nullptr)
 			{
@@ -101,7 +101,7 @@ uint8_t Board::findIntention(const Move& move)
 	}
 	else if (moveDelta.y == 0) // double square initial pawn move is also prevented from jumping pieces here
 	{
-		for (int i = sgn(moveDelta.x); i < abs(moveDelta.x); i += sgn(moveDelta.x))
+		for (int i = sgn(moveDelta.x); abs(i) < abs(moveDelta.x); i += sgn(moveDelta.x))
 		{
 			if (board_[move.src().x + i][move.src().y] != nullptr)
 			{
