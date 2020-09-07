@@ -80,8 +80,10 @@ template <typename T> int sgn(T val) {
 uint8_t Board::findIntention(const Move& move)
 {
 	Pos2D moveDelta = move.dest() - move.src();
+	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+
 	// can't move empty squares
-	if (pieceAt(move.src()) == nullptr)
+	if (pieceHere == nullptr)
 		return 255;
 
 	// bishop-like movement
@@ -124,15 +126,15 @@ uint8_t Board::findIntention(const Move& move)
 		return 0; // standard move
 
 	// can't move on friendly pieces
-	if (pieceAt(move.src())->isWhite() == pieceAt(move.dest())->isWhite())
+	if (pieceHere->isWhite() == pieceAt(move.dest())->isWhite())
 		return 255;
 	else
 		return 1; // capturing move
 
-	// TODO: return 2 for castling, 3 for en passant pawn capture.
+	// TODO: 3 for en passant pawn capture.
 }
 
-uint8_t gameOver()
+uint8_t Board::gameOver()
 {
 
 	return 0;
@@ -185,7 +187,10 @@ Board::Board()
 		for (int8_t j = 0; j < 8; j++)
 		{
 			if (board_[i][j] != nullptr)
+			{
 				board_[i][j]->setPos({ i, j });
+				pieces_.push_back(board_[i][j]);
+			}
 		}
 	}
 }
