@@ -3,15 +3,6 @@
 
 Board g_board;
 
-/// <summary> </summary>
-/// <param name="b"> - the chess board object </param>
-/// <returns> why the game ended. 1 = checkmate, 2 = no moves left, 3 = not enough material, TODO add more</returns>
-uint8_t gameOver(const Board& b)
-{
-
-    return 0;
-}
-
 int main()
 {
     std::string col;
@@ -20,7 +11,7 @@ int main()
     g_board.setPlayingAsWhite(col[0] == 'w');
 
     uint8_t gameStatus;
-    while (gameStatus = gameOver(g_board) == 0)
+    while (gameStatus = g_board.gameOver() == 0)
     {
         std::cout << g_board << '\n';
 

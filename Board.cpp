@@ -132,6 +132,12 @@ uint8_t Board::findIntention(const Move& move)
 	// TODO: return 2 for castling, 3 for en passant pawn capture.
 }
 
+uint8_t gameOver()
+{
+
+	return 0;
+}
+
 Board::Board()
 {
 	// initialize the board_ with nullptrs

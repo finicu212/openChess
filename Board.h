@@ -29,6 +29,8 @@ public:
 
 	uint8_t findIntention(const Move& move);
 
+	uint8_t gameOver();
+
 	Board();
 
 	friend std::ostream& operator<<(std::ostream& os, const Board& b);
