@@ -29,14 +29,13 @@ int main()
         g_board.movePiece(move);
     }
 
-    bool whiteWon = !g_board.whitesTurn();
     switch (gameStatus)
     {
     case 1:
-        std::cout << "Checkmate! " << (whiteWon ? "white" : "black") << " won!\n";
+        std::cout << "Checkmate! " << (!g_board.whitesTurn() ? "white" : "black") << " won!\n";
         break;
     case 2:
-        std::cout << "Stalemate! No moves left for " << (!whiteWon ? "white" : "black") << '\n';
+        std::cout << "Stalemate! No moves left for " << (g_board.whitesTurn() ? "white" : "black") << '\n';
         break;
     case 3:
         std::cout << "Stalemate due to lack of material\n";
