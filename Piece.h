@@ -14,6 +14,8 @@ public:
 	void setPos(const Pos2D& p);
 
 	void setHasMoved(bool m);
+	
+	bool hasMoved();
 
 	virtual bool isValidMove(const Move& move) = 0;
 

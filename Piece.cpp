@@ -26,6 +26,11 @@ void Piece::setHasMoved(bool m)
 	hasMoved_ = m;
 }
 
+bool Piece::hasMoved()
+{
+	return hasMoved_;
+}
+
 Piece::Piece(char a, bool w) : art_(a), isWhite_(w) {};
 
 Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p', isWhite) {};
