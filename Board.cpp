@@ -146,7 +146,7 @@ Board::Board()
 	board_[0][1] = make_shared<Knight>(true);
 	board_[0][2] = make_shared<Bishop>(true);
 	board_[0][3] = make_shared<Queen>(true);
-	board_[0][4] = make_shared<King>(true);
+	board_[0][4] = whiteKing = make_shared<King>(true);
 	board_[0][5] = make_shared<Bishop>(true);
 	board_[0][6] = make_shared<Knight>(true);
 	board_[0][7] = make_shared<Rook>(true);
@@ -168,7 +168,7 @@ Board::Board()
 	board_[7][1] = make_shared<Knight>(false);
 	board_[7][2] = make_shared<Bishop>(false);
 	board_[7][3] = make_shared<Queen>(false);
-	board_[7][4] = make_shared<King>(false);
+	board_[7][4] = blackKing = make_shared<King>(false);
 	board_[7][5] = make_shared<Bishop>(false);
 	board_[7][6] = make_shared<Knight>(false);
 	board_[7][7] = make_shared<Rook>(false);
