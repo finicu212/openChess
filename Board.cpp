@@ -86,6 +86,22 @@ uint8_t Board::findIntention(const Move& move)
 	if (pieceHere == nullptr)
 		return 255;
 
+	if ((pieceHere == whiteKing || pieceHere == blackKing) &&
+		(moveDelta.abs() == Pos2D(0, 2)) &&
+		(!pieceHere->hasMoved()))
+	{
+		shared_ptr<Piece> targetRook;
+		if (moveDelta.y < 0)
+		{
+			targetRook = board_[pieceHere->isWhite() ? 0 : 7][0];
+		}
+		else
+		{
+			targetRook = board_[pieceHere->isWhite() ? 0 : 7][7];
+		}
+		std::cout << targetRook->art() << '\n';
+	}
+
 	// bishop-like movement
 	if (moveDelta.x == moveDelta.y)
 	{
