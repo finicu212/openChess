@@ -35,10 +35,11 @@ void Board::movePiece(const Move& move)
 	pieceHere->setPos(move.dest());
 	pieceHere->setHasMoved(true);
 
-	if (pieceHere->canPromote())
-	{
-		pieceHere = make_shared<Queen>(pieceHere->isWhite());
-	}
+	// reference there
+	setPiece(move.dest(), pieceHere);
+
+	// remove piece from here
+	setPiece(move.src(), nullptr);
 
 	// remove from our vectors if we captured
 	if (pieceThere != nullptr)
@@ -59,11 +60,22 @@ void Board::movePiece(const Move& move)
 				}
 			}
 
-	// reference there
-	setPiece(move.dest(), pieceHere);
+	//			--- SPECIAL MOVES ---
+	// Pawn promotion
+	if (pieceHere->canPromote())
+	{
+		pieceHere = make_shared<Queen>(pieceHere->isWhite());
+	}
 
-	// remove piece from here
-	setPiece(move.src(), nullptr);
+	// Castling
+	if (move.intention() == 2 || move.intention() == 3)
+	{
+		std::cout << "board::castling\n";
+		shared_ptr<Piece> targetRook = board_[pieceHere->isWhite() ? 0 : 7][move.intention() == 3 ? 0 : 7];
+		setPiece(targetRook->pos(), nullptr);
+		targetRook->setPos(move.dest() + Pos2D(0, move.intention() == 3 ? 1 : -1));
+		setPiece(targetRook->pos(), targetRook);
+	}
 	
 	whitesTurn_ = !whitesTurn_;
 }
@@ -112,12 +124,14 @@ uint8_t Board::findIntention(const Move& move)
 		(moveDelta.abs() == Pos2D(0, 2)) &&
 		(!pieceHere->hasMoved()))
 	{
+		std::cout << "castle candidate..\n";
 		bool validCastle = true;
 		shared_ptr<Piece> targetRook;
 		targetRook = board_[pieceHere->isWhite() ? 0 : 7][moveDelta.y < 0 ? 0 : 7];
 
 		if (targetRook->hasMoved())
 		{
+			std::cout << "failed castle: rook has moved\n";
 			validCastle = false;
 		}
 
@@ -163,6 +177,7 @@ uint8_t Board::findIntention(const Move& move)
 
 		if (validCastle)
 		{
+			std::cout << "successful\n";
 			if (distRook.y == 3)
 				return 2; // kingside
 			else
