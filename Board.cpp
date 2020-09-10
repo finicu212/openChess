@@ -213,7 +213,11 @@ Board::Board()
 			if (board_[i][j] != nullptr)
 			{
 				board_[i][j]->setPos({ i, j });
-				pieces_.push_back(board_[i][j]);
+
+				if (board_[i][j]->isWhite())
+					whitePieces_.push_back(board_[i][j]);
+				else
+					blackPieces_.push_back(board_[i][j]);
 			}
 		}
 	}

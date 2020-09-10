@@ -37,7 +37,7 @@ public:
 
 private:
 	vector<vector<shared_ptr<Piece>>> board_;
-	vector<shared_ptr<Piece>> pieces_;
+	vector<shared_ptr<Piece>> whitePieces_, blackPieces_;
 	shared_ptr<King> whiteKing, blackKing;
 	bool playingAsWhite_ = true, whitesTurn_ = true;;
 };
