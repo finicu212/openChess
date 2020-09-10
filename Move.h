@@ -32,8 +32,9 @@ private:
 	*	
 	*	0 - Standard, no capture move
 	*   1 - Capturing move
-	*	2 - Castling move
-	*	3 - En Passant move
+	*	2 - Castling kingside
+	*	3 - Castling queenside
+	*	4 - En passant capture
 	*
 	*	Possible invalid moves:
 	*	253 - Tried jumping over a piece with a rook (or queen, double square initial pawn move)

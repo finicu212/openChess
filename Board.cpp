@@ -123,6 +123,7 @@ uint8_t Board::findIntention(const Move& move)
 
 		// make sure no pieces are in the way
 		Pos2D distRook = targetRook->pos() - pieceHere->pos();
+
 		for (int i = sgn(distRook.y); abs(i) < abs(distRook.y); i += sgn(distRook.y))
 		{
 			if (board_[move.src().x][move.src().y + i] != nullptr)
@@ -162,8 +163,10 @@ uint8_t Board::findIntention(const Move& move)
 
 		if (validCastle)
 		{
-			std::cout << "WOHOHOOOO VALID CASTLE\n";
-			return 2;
+			if (distRook.y == 3)
+				return 2; // kingside
+			else
+				return 3; // queenside
 		}
 	}
 
@@ -212,7 +215,7 @@ uint8_t Board::findIntention(const Move& move)
 	else
 		return 1; // capturing move
 
-	// TODO: 3 for en passant pawn capture.
+	// TODO: 4 for en passant pawn capture.
 }
 
 uint8_t Board::gameOver()
