@@ -192,16 +192,18 @@ Board::Board()
 
 std::ostream& operator<<(std::ostream& os, const Board& b)
 {
+	os << "\n    A   B   C   D   E   F   G   H\n";
 	os << "  +---+---+---+---+---+---+---+---+\n";
 
 	for (uint8_t i = 0; i < 8; i++)
 	{
-		os << (b.playingAsWhite_ ? (8 - i) : (i + 1)) << " ";
+		int currIndex = b.playingAsWhite_ ? (8 - i) : (i + 1);
+		os << currIndex << " ";
 		for (uint8_t j = 0; j < 8; j++)
 		{
 			os << "| " << b.getArtAt( Pos2D(b.playingAsWhite_ ? (7 - i) : i, j) ) << " ";
 		}
-		os << "|\n";
+		os << "| " << currIndex << '\n';
 		os << "  +---+---+---+---+---+---+---+---+\n";
 	}
 	os << "    A   B   C   D   E   F   G   H\n";
