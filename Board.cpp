@@ -30,10 +30,38 @@ char Board::getArtAt(const Pos2D& pos) const
 void Board::movePiece(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
 	// tell the piece where it will be
 	pieceHere->setPos(move.dest());
 	pieceHere->setHasMoved(true);
 
+	// reference there
+	setPiece(move.dest(), pieceHere);
+
+	// remove piece from here
+	setPiece(move.src(), nullptr);
+
+	// remove from our vectors if we captured
+	if (pieceThere != nullptr)
+		if (pieceThere->isWhite())
+			for (uint8_t i = 0; i < whitePieces_.size(); i++)
+			{
+				if (whitePieces_[i] == pieceThere)
+				{
+					whitePieces_.erase(whitePieces_.begin() + i);
+				}
+			}
+		else
+			for (uint8_t i = 0; i < blackPieces_.size(); i++)
+			{
+				if (blackPieces_[i] == pieceThere)
+				{
+					blackPieces_.erase(blackPieces_.begin() + i);
+				}
+			}
+
+	//			--- SPECIAL MOVES ---
+	// Pawn promotion
 	if (pieceHere->canPromote())
 	{
 		shared_ptr<Piece> promotedPiece = make_shared<Queen>(pieceHere->isWhite());
@@ -59,10 +87,14 @@ void Board::movePiece(const Move& move)
 		}
 	}
 
-	// reference there
-	setPiece(move.dest(), pieceHere);
-	// remove piece from here
-	setPiece(move.src(), nullptr);
+	// Castling
+	if (move.intention() == 2 || move.intention() == 3)
+	{
+		shared_ptr<Piece> targetRook = board_[pieceHere->isWhite() ? 0 : 7][move.intention() == 3 ? 0 : 7];
+		setPiece(targetRook->pos(), nullptr);
+		targetRook->setPos(move.dest() + Pos2D(0, move.intention() == 3 ? 1 : -1));
+		setPiece(targetRook->pos(), targetRook);
+	}
 	
 	//whitesTurn_ = !whitesTurn_;
 }
@@ -100,9 +132,71 @@ template <typename T> int sgn(T val) {
 uint8_t Board::findIntention(const Move& move)
 {
 	Pos2D moveDelta = move.dest() - move.src();
+	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+
 	// can't move empty squares
-	if (pieceAt(move.src()) == nullptr)
+	if (pieceHere == nullptr)
 		return 255;
+
+	// is castling?
+	if ((pieceHere == whiteKing || pieceHere == blackKing) &&
+		(moveDelta.abs() == Pos2D(0, 2)) &&
+		(!pieceHere->hasMoved()))
+	{
+		bool validCastle = true;
+		shared_ptr<Piece> targetRook;
+		targetRook = board_[pieceHere->isWhite() ? 0 : 7][moveDelta.y < 0 ? 0 : 7];
+
+		if (targetRook->hasMoved())
+		{
+			validCastle = false;
+		}
+
+		// make sure no pieces are in the way
+		Pos2D distRook = targetRook->pos() - pieceHere->pos();
+
+		for (int i = sgn(distRook.y); abs(i) < abs(distRook.y); i += sgn(distRook.y))
+		{
+			if (board_[move.src().x][move.src().y + i] != nullptr)
+			{
+				validCastle = false;
+			}
+		}
+
+		// make sure no enemy piece is looking between (or at) king & rook. ~EXPENSIVE!
+		for (int i = 0; abs(i) < (abs(distRook.y) + 1); i += sgn(distRook.y))
+		{
+			Pos2D posHere = Pos2D(move.src().x, move.src().y + i);
+			if (pieceHere->isWhite())
+			{
+				for (auto p : blackPieces_)
+				{
+					if (isValidMove(Move(p->pos(), posHere)))
+					{
+						validCastle = false;
+					}
+				}
+			}
+			else
+			{
+				for (auto p : whitePieces_)
+				{
+					if (isValidMove(Move(p->pos(), posHere)))
+					{
+						validCastle = false;
+					}
+				}
+			}
+		}
+
+		if (validCastle)
+		{
+			if (distRook.y == 3)
+				return 2; // kingside
+			else
+				return 3; // queenside
+		}
+	}
 
 	// bishop-like movement
 	if (moveDelta.x == moveDelta.y)
@@ -144,15 +238,15 @@ uint8_t Board::findIntention(const Move& move)
 		return 0; // standard move
 
 	// can't move on friendly pieces
-	if (pieceAt(move.src())->isWhite() == pieceAt(move.dest())->isWhite())
+	if (pieceHere->isWhite() == pieceAt(move.dest())->isWhite())
 		return 255;
 	else
 		return 1; // capturing move
 
-	// TODO: return 2 for castling, 3 for en passant pawn capture.
+	// TODO: 4 for en passant pawn capture.
 }
 
-uint8_t gameOver()
+uint8_t Board::gameOver()
 {
 
 	return 0;
@@ -205,7 +299,14 @@ Board::Board()
 		for (int8_t j = 0; j < 8; j++)
 		{
 			if (board_[i][j] != nullptr)
+			{
 				board_[i][j]->setPos({ i, j });
+
+				if (board_[i][j]->isWhite())
+					whitePieces_.push_back(board_[i][j]);
+				else
+					blackPieces_.push_back(board_[i][j]);
+			}
 		}
 	}
 }

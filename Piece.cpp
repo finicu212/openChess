@@ -26,6 +26,11 @@ void Piece::setHasMoved(bool m)
 	hasMoved_ = m;
 }
 
+bool Piece::hasMoved()
+{
+	return hasMoved_;
+}
+
 Piece::Piece(char a, bool w) : art_(a), isWhite_(w) {};
 
 Pawn::Pawn(bool isWhite) : Piece(isWhite ? 'P' : 'p', isWhite) {};
@@ -115,6 +120,10 @@ bool Queen::isValidMove(const Move& move)
 bool King::isValidMove(const Move& move)
 {
 	Pos2D moveDelta = (move.dest() - move.src()).abs();
+
+	if (move.intention() == 2 || move.intention() == 3)
+		return true;
+
 	return moveDelta.x < 2 && moveDelta.y < 2;
 }
 
