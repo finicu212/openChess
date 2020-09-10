@@ -121,13 +121,49 @@ uint8_t Board::findIntention(const Move& move)
 			validCastle = false;
 		}
 
+		// make sure no pieces are in the way
 		Pos2D distRook = targetRook->pos() - pieceHere->pos();
 		for (int i = sgn(distRook.y); abs(i) < abs(distRook.y); i += sgn(distRook.y))
 		{
 			if (board_[move.src().x][move.src().y + i] != nullptr)
 			{
+				std::cout << "piece in the way\n";
 				validCastle = false;
 			}
+		}
+
+		// make sure no enemy piece is looking between (or at) king & rook. ~EXPENSIVE!
+		for (int i = 0; abs(i) < (abs(distRook.y) + 1); i += sgn(distRook.y))
+		{
+			Pos2D posHere = Pos2D(move.src().x, move.src().y + i);
+			if (pieceHere->isWhite())
+			{
+				for (auto p : blackPieces_)
+				{
+					if (isValidMove(Move(p->pos(), posHere)))
+					{
+						std::cout << p->art() << " black piece looking between\n";
+						validCastle = false;
+					}
+				}
+			}
+			else
+			{
+				for (auto p : whitePieces_)
+				{
+					if (isValidMove(Move(p->pos(), posHere)))
+					{
+						std::cout << p->art() << " white piece looking between\n";
+						validCastle = false;
+					}
+				}
+			}
+		}
+
+		if (validCastle)
+		{
+			std::cout << "WOHOHOOOO VALID CASTLE\n";
+			return 2;
 		}
 	}
 
