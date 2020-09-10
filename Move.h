@@ -35,6 +35,9 @@ private:
 	*	2 - Castling move
 	*	3 - En Passant move
 	*
+	*	Possible invalid moves:
+	*	253 - Tried jumping over a piece with a rook (or queen, double square initial pawn move)
+	*	254 - Tried jumping over a piece with a bishop (or queen)
 	*	255 - Invalid move (to be checked in Board::isValidMove)
 	*/
 };
