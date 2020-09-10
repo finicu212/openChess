@@ -30,6 +30,7 @@ char Board::getArtAt(const Pos2D& pos) const
 void Board::movePiece(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
 	// tell the piece where it will be
 	pieceHere->setPos(move.dest());
 	pieceHere->setHasMoved(true);
@@ -39,8 +40,28 @@ void Board::movePiece(const Move& move)
 		pieceHere = make_shared<Queen>(pieceHere->isWhite());
 	}
 
+	// remove from our vectors if we captured
+	if (pieceThere != nullptr)
+		if (pieceThere->isWhite())
+			for (uint8_t i = 0; i < whitePieces_.size(); i++)
+			{
+				if (whitePieces_[i] == pieceThere)
+				{
+					whitePieces_.erase(whitePieces_.begin() + i);
+				}
+			}
+		else
+			for (uint8_t i = 0; i < blackPieces_.size(); i++)
+			{
+				if (blackPieces_[i] == pieceThere)
+				{
+					blackPieces_.erase(blackPieces_.begin() + i);
+				}
+			}
+
 	// reference there
 	setPiece(move.dest(), pieceHere);
+
 	// remove piece from here
 	setPiece(move.src(), nullptr);
 	
