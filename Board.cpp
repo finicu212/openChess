@@ -36,7 +36,27 @@ void Board::movePiece(const Move& move)
 
 	if (pieceHere->canPromote())
 	{
-		pieceHere = make_shared<Queen>(pieceHere->isWhite());
+		shared_ptr<Piece> promotedPiece = make_shared<Queen>(pieceHere->isWhite());
+		setPiece(move.dest(), promotedPiece);
+
+		if (promotedPiece->isWhite())
+		{
+			for (int i = 0; i < whitePieces_.size(); i++)
+				if (whitePieces_[i] == promotedPiece)
+				{
+					whitePieces_.erase(whitePieces_.begin() + i);
+				}
+			whitePieces_.push_back(promotedPiece);
+		}
+		else
+		{
+			for (int i = 0; i < blackPieces_.size(); i++)
+				if (blackPieces_[i] == promotedPiece)
+				{
+					blackPieces_.erase(blackPieces_.begin() + i);
+				}
+			blackPieces_.push_back(promotedPiece);
+		}
 	}
 
 	// reference there
@@ -44,7 +64,7 @@ void Board::movePiece(const Move& move)
 	// remove piece from here
 	setPiece(move.src(), nullptr);
 	
-	whitesTurn_ = !whitesTurn_;
+	//whitesTurn_ = !whitesTurn_;
 }
 
 bool Board::isValidMove(const Move& move)
