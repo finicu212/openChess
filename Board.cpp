@@ -86,20 +86,28 @@ uint8_t Board::findIntention(const Move& move)
 	if (pieceHere == nullptr)
 		return 255;
 
+	// is castling?
 	if ((pieceHere == whiteKing || pieceHere == blackKing) &&
 		(moveDelta.abs() == Pos2D(0, 2)) &&
 		(!pieceHere->hasMoved()))
 	{
+		bool validCastle = true;
 		shared_ptr<Piece> targetRook;
-		if (moveDelta.y < 0)
+		targetRook = board_[pieceHere->isWhite() ? 0 : 7][moveDelta.y < 0 ? 0 : 7];
+
+		if (targetRook->hasMoved())
 		{
-			targetRook = board_[pieceHere->isWhite() ? 0 : 7][0];
+			validCastle = false;
 		}
-		else
+
+		Pos2D distRook = targetRook->pos() - pieceHere->pos();
+		for (int i = sgn(distRook.y); abs(i) < abs(distRook.y); i += sgn(distRook.y))
 		{
-			targetRook = board_[pieceHere->isWhite() ? 0 : 7][7];
+			if (board_[move.src().x][move.src().y + i] != nullptr)
+			{
+				validCastle = false;
+			}
 		}
-		std::cout << targetRook->art() << '\n';
 	}
 
 	// bishop-like movement
