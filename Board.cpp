@@ -70,7 +70,6 @@ void Board::movePiece(const Move& move)
 	// Castling
 	if (move.intention() == 2 || move.intention() == 3)
 	{
-		std::cout << "board::castling\n";
 		shared_ptr<Piece> targetRook = board_[pieceHere->isWhite() ? 0 : 7][move.intention() == 3 ? 0 : 7];
 		setPiece(targetRook->pos(), nullptr);
 		targetRook->setPos(move.dest() + Pos2D(0, move.intention() == 3 ? 1 : -1));
@@ -124,14 +123,12 @@ uint8_t Board::findIntention(const Move& move)
 		(moveDelta.abs() == Pos2D(0, 2)) &&
 		(!pieceHere->hasMoved()))
 	{
-		std::cout << "castle candidate..\n";
 		bool validCastle = true;
 		shared_ptr<Piece> targetRook;
 		targetRook = board_[pieceHere->isWhite() ? 0 : 7][moveDelta.y < 0 ? 0 : 7];
 
 		if (targetRook->hasMoved())
 		{
-			std::cout << "failed castle: rook has moved\n";
 			validCastle = false;
 		}
 
@@ -142,7 +139,6 @@ uint8_t Board::findIntention(const Move& move)
 		{
 			if (board_[move.src().x][move.src().y + i] != nullptr)
 			{
-				std::cout << "piece in the way\n";
 				validCastle = false;
 			}
 		}
@@ -157,7 +153,6 @@ uint8_t Board::findIntention(const Move& move)
 				{
 					if (isValidMove(Move(p->pos(), posHere)))
 					{
-						std::cout << p->art() << " black piece looking between\n";
 						validCastle = false;
 					}
 				}
@@ -168,7 +163,6 @@ uint8_t Board::findIntention(const Move& move)
 				{
 					if (isValidMove(Move(p->pos(), posHere)))
 					{
-						std::cout << p->art() << " white piece looking between\n";
 						validCastle = false;
 					}
 				}
@@ -177,7 +171,6 @@ uint8_t Board::findIntention(const Move& move)
 
 		if (validCastle)
 		{
-			std::cout << "successful\n";
 			if (distRook.y == 3)
 				return 2; // kingside
 			else
