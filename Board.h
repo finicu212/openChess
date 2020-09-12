@@ -17,6 +17,8 @@ public:
 
 	char getArtAt(const Pos2D& pos) const;
 
+	bool kingInCheck(bool col);
+
 	void movePiece(const Move& move);
 
 	bool isValidMove(const Move& move);
