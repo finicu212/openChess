@@ -122,6 +122,7 @@ void Board::movePiece(const Move& move)
 bool Board::isValidMove(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
 	bool pieceColor = pieceHere->isWhite();
 
 	if (pieceColor != whitesTurn_)
@@ -137,11 +138,11 @@ bool Board::isValidMove(const Move& move)
 	{
 		// try the move, see if we're still in check afterwards
 		setPiece(move.dest(), pieceHere);
-		setPiece(move.src(), nullptr);
+		setPiece(move.src(), pieceThere);
 
 		bool inCheck = (kingInCheck(pieceColor) != nullptr);
 		setPiece(move.src(), pieceHere);
-		setPiece(move.dest(), nullptr);
+		setPiece(move.dest(), pieceThere);
 
 		if (inCheck)
 			return false;
@@ -297,19 +298,25 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 	}
 
 	Pos2D attackerMoveDelta = posToBlock - target->pos();
+	std::cout << "Delta: " << (int) attackerMoveDelta.x << ", " << (int) attackerMoveDelta.y << '\n';
+
 	if (attackerMoveDelta.x == attackerMoveDelta.y)
 	{
+		std::cout << "Blocking a bishop\n";
 		// we're trying to block a bishop here
 		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
 		{
-			Pos2D blockedSquare(posToBlock.x + i, posToBlock.y + i);
+			Pos2D blockedSquare(posToBlock.x - i, posToBlock.y - i);
 			Move blockingMove = Move(blocker->pos(), blockedSquare);
 			captureMove.setIntention(findIntention(captureMove));
 
 			if (isValidMove(blockingMove))
 			{
+				std::cout << blocker->art() << " can block!\n";
 				return true;
 			}
+
+			std::cout << blocker->art() << " couldn't block the square " << (int) blockedSquare.x << ", " << (int) blockedSquare.y << "\n";
 		}
 	}
 
