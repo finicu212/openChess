@@ -17,7 +17,8 @@ public:
 
 	char getArtAt(const Pos2D& pos) const;
 
-	bool kingInCheck(bool col);
+	// returns piece that attacks king
+	shared_ptr<Piece> kingInCheck(bool col);
 
 	void movePiece(const Move& move);
 
@@ -30,6 +31,8 @@ public:
 	bool whitesTurn();
 
 	uint8_t findIntention(const Move& move);
+
+	bool canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D posToBlock);
 
 	uint8_t gameOver();
 

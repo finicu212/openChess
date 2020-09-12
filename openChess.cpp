@@ -11,7 +11,7 @@ int main()
     g_board.setPlayingAsWhite(col[0] == 'w');
 
     uint8_t gameStatus;
-    while (gameStatus = g_board.gameOver() == 0)
+    while ((gameStatus = g_board.gameOver()) == 0)
     {
         std::cout << g_board << '\n';
 
@@ -44,4 +44,6 @@ int main()
         std::cout << "Game ended because of unknown cause\n";
         break;
     }
+
+    std::cout << g_board;
 }

@@ -33,7 +33,7 @@ char Board::getArtAt(const Pos2D& pos) const
 	return pHere->art();
 }
 
-bool Board::kingInCheck(bool col)
+shared_ptr<Piece> Board::kingInCheck(bool col)
 {
 	whitesTurn_ = !whitesTurn_;
 	for (shared_ptr<Piece> p : (col == true ? blackPieces_ : whitePieces_))
@@ -43,12 +43,12 @@ bool Board::kingInCheck(bool col)
 		if (isValidMove(checkMove))
 		{
 			whitesTurn_ = !whitesTurn_;
-			return true;
+			return p;
 		}
 	}
 
 	whitesTurn_ = !whitesTurn_;
-	return false;
+	return nullptr;
 }
 
 void Board::movePiece(const Move& move)
@@ -122,6 +122,7 @@ void Board::movePiece(const Move& move)
 bool Board::isValidMove(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
 	bool pieceColor = pieceHere->isWhite();
 
 	if (pieceColor != whitesTurn_)
@@ -133,15 +134,15 @@ bool Board::isValidMove(const Move& move)
 	if (!pieceAt(move.src())->isValidMove(move))
 		return false;
 
-	if (kingInCheck(pieceColor))
+	if (kingInCheck(pieceColor) != nullptr)
 	{
 		// try the move, see if we're still in check afterwards
 		setPiece(move.dest(), pieceHere);
-		setPiece(move.src(), nullptr);
+		setPiece(move.src(), pieceThere);
 
-		bool inCheck = kingInCheck(pieceColor);
+		bool inCheck = (kingInCheck(pieceColor) != nullptr);
 		setPiece(move.src(), pieceHere);
-		setPiece(move.dest(), nullptr);
+		setPiece(move.dest(), pieceThere);
 
 		if (inCheck)
 			return false;
@@ -286,8 +287,117 @@ uint8_t Board::findIntention(const Move& move)
 	// TODO: 4 for en passant pawn capture.
 }
 
+bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D posToBlock)
+{
+	Move captureMove = Move(blocker->pos(), target->pos());
+	captureMove.setIntention(findIntention(captureMove));
+	if (isValidMove(captureMove))
+	{
+		// can just capture the target
+		return true;
+	}
+
+	Pos2D attackerMoveDelta = posToBlock - target->pos();
+
+	if (attackerMoveDelta.x == attackerMoveDelta.y)
+	{
+		// we're trying to block a bishop here
+		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
+		{
+			Pos2D blockedSquare(posToBlock.x - i, posToBlock.y - i);
+			Move blockingMove = Move(blocker->pos(), blockedSquare);
+			blockingMove.setIntention(findIntention(blockingMove));
+
+			if (isValidMove(blockingMove))
+			{
+				return true;
+			}
+		}
+	}
+
+	if (attackerMoveDelta.x == 0)
+	{
+		// we're trying to block a vertical rook-like attack here
+		for (int i = sgn(attackerMoveDelta.y); abs(i) < abs(attackerMoveDelta.y); i += sgn(attackerMoveDelta.y))
+		{
+			Pos2D blockedSquare(posToBlock.x, posToBlock.y + i);
+			Move blockingMove = Move(blocker->pos(), blockedSquare);
+			blockingMove.setIntention(findIntention(blockingMove));
+
+			if (isValidMove(blockingMove))
+			{
+				return true;
+			}
+		}
+	}
+
+	if (attackerMoveDelta.y == 0)
+	{
+		// we're trying to block a horizontal rook-like attack here
+		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
+		{
+			Pos2D blockedSquare(posToBlock.x + i, posToBlock.y);
+			Move blockingMove = Move(blocker->pos(), blockedSquare);
+			blockingMove.setIntention(findIntention(blockingMove));
+
+			if (isValidMove(blockingMove))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
 uint8_t Board::gameOver()
 {
+	shared_ptr<Piece> attacker = kingInCheck(whitesTurn_);
+
+	// in check
+	if (attacker != nullptr)
+	{
+		bool checkMate = true;
+
+		// can run with king?
+		for (int8_t dx = -1; dx <= 1; dx++)
+		{
+			for (int8_t dy = -1; dy <= 1; dy++)
+			{
+				Pos2D kingPos = whitesTurn_ ? whiteKing->pos() : blackKing->pos();
+				Pos2D runPos = Pos2D(dx, dy) + kingPos;
+
+				// out of bounds
+				if (runPos.x < 0 || runPos.x > 7 || runPos.y < 0 || runPos.y > 7)
+					continue;
+
+				Move runMove = Move(kingPos, runPos);
+				runMove.setIntention(findIntention(runMove));
+				if (isValidMove(runMove))
+				{
+					checkMate = false;
+				}
+			}
+		}
+	
+		if (checkMate)
+		{
+			// go through all pieces and see if we can block the check.
+			// Expensive, so only do this if cant run with king
+
+			for (shared_ptr<Piece> p : whitesTurn_ ? whitePieces_ : blackPieces_)
+			{
+				if (canBlock(attacker, p, whitesTurn_ ? whiteKing->pos() : blackKing->pos()))
+				{
+					checkMate = false;
+				}
+			}
+		}
+
+		if (checkMate)
+			return 1;
+	}
+
 
 	return 0;
 }
