@@ -288,6 +288,40 @@ uint8_t Board::findIntention(const Move& move)
 
 uint8_t Board::gameOver()
 {
+	shared_ptr<Piece> attacker = kingInCheck(whitesTurn_);
+
+	// in check
+	if (attacker != nullptr)
+	{
+		bool checkMate = true;
+
+		// can run with king?
+		for (int8_t dx = -1; dx <= 1; dx++)
+		{
+			for (int8_t dy = -1; dy <= 1; dy++)
+			{
+				Pos2D kingPos = whitesTurn_ ? whiteKing->pos() : blackKing->pos();
+				Pos2D runPos = Pos2D(dx, dy) + kingPos;
+
+				// out of bounds
+				if (runPos.x < 0 || runPos.x > 7 || runPos.y < 0 || runPos.y > 7)
+					continue;
+
+				Move runMove = Move(kingPos, runPos);
+				runMove.setIntention(findIntention(runMove));
+				if (isValidMove(runMove))
+				{
+					checkMate = false;
+				}
+			}
+		}
+	
+		if (checkMate)
+		{
+			return true;
+		}
+	}
+
 
 	return 0;
 }
