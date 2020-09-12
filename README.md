@@ -17,6 +17,8 @@ to be added:
 
 - colored text / background for pieces / unshaded squares
 
+- other stuff from [issues](https://github.com/finicu212/openChess/issues)
+
 -----
 
 Update on development status as of 2020-09-07:
