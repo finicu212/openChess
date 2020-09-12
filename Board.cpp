@@ -117,23 +117,37 @@ void Board::movePiece(const Move& move)
 	}
 	
 	whitesTurn_ = !whitesTurn_;
-
-	if (kingInCheck(true) || kingInCheck(false))
-	{
-		std::cout << whitesTurn_ << " is in check\n";
-	}
 }
 
 bool Board::isValidMove(const Move& move)
 {
+	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	bool pieceColor = pieceHere->isWhite();
+
+	if (pieceColor != whitesTurn_)
+		return false;
+
 	if (move.intention() == 255)
 		return false;
 
-	if (pieceAt(move.src())->isWhite() != whitesTurn_)
+	if (!pieceAt(move.src())->isValidMove(move))
 		return false;
 
+	if (kingInCheck(pieceColor))
+	{
+		// try the move, see if we're still in check afterwards
+		setPiece(move.dest(), pieceHere);
+		setPiece(move.src(), nullptr);
 
-	return pieceAt(move.src())->isValidMove(move);
+		bool inCheck = kingInCheck(pieceColor);
+		setPiece(move.src(), pieceHere);
+		setPiece(move.dest(), nullptr);
+
+		if (inCheck)
+			return false;
+	}
+
+	return true;
 }
 
 void Board::setPlayingAsWhite(bool asWhite)
