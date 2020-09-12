@@ -286,6 +286,34 @@ uint8_t Board::findIntention(const Move& move)
 	// TODO: 4 for en passant pawn capture.
 }
 
+bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D posToBlock)
+{
+	Move captureMove = Move(blocker->pos(), target->pos());
+	captureMove.setIntention(findIntention(captureMove));
+	if (isValidMove(captureMove))
+	{
+		// can just capture the target
+		return true;
+	}
+
+	Pos2D attackerMoveDelta = posToBlock - target->pos();
+	if (attackerMoveDelta.x == attackerMoveDelta.y)
+	{
+		// we're trying to block a bishop here
+		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
+		{
+			Pos2D blockedSquare(posToBlock.x + i, posToBlock.y + i);
+			Move blockingMove = Move(blocker->pos(), blockedSquare);
+			captureMove.setIntention(findIntention(captureMove));
+
+			if (isValidMove(blockingMove))
+			{
+				return true;
+			}
+		}
+	}
+}
+
 uint8_t Board::gameOver()
 {
 	shared_ptr<Piece> attacker = kingInCheck(whitesTurn_);
