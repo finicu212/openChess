@@ -8,6 +8,9 @@ shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 {
 	board_[pos.x][pos.y] = piece;
+	
+	if (piece != nullptr)
+		piece->setPos(pos);
 }
 
 char Board::getArtAt(const Pos2D& pos) const
