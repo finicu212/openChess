@@ -144,8 +144,6 @@ bool Board::isValidMove(const Move& move)
 		setPiece(move.src(), pieceHere);
 		setPiece(move.dest(), pieceThere);
 
-		std::cout << (inCheck ? "bruh still in check\n" : "can fix check\n");
-
 		if (inCheck)
 			return false;
 	}
