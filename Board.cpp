@@ -318,7 +318,7 @@ uint8_t Board::gameOver()
 	
 		if (checkMate)
 		{
-			return true;
+			return 1;
 		}
 	}
 
