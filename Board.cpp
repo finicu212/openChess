@@ -8,9 +8,12 @@ shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 {
 	board_[pos.x][pos.y] = piece;
-	
+
 	if (piece != nullptr)
+	{
 		piece->setPos(pos);
+		piece->setHasMoved(true);
+	}
 }
 
 char Board::getArtAt(const Pos2D& pos) const
@@ -34,9 +37,6 @@ void Board::movePiece(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
 	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
-	// tell the piece where it will be
-	pieceHere->setPos(move.dest());
-	pieceHere->setHasMoved(true);
 
 	// reference there
 	setPiece(move.dest(), pieceHere);
@@ -95,8 +95,7 @@ void Board::movePiece(const Move& move)
 	{
 		shared_ptr<Piece> targetRook = board_[pieceHere->isWhite() ? 0 : 7][move.intention() == 3 ? 0 : 7];
 		setPiece(targetRook->pos(), nullptr);
-		targetRook->setPos(move.dest() + Pos2D(0, move.intention() == 3 ? 1 : -1));
-		setPiece(targetRook->pos(), targetRook);
+		setPiece(move.dest() + Pos2D(0, move.intention() == 3 ? 1 : -1), targetRook);
 	}
 	
 	//whitesTurn_ = !whitesTurn_;
