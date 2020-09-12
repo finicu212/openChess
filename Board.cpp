@@ -33,6 +33,24 @@ char Board::getArtAt(const Pos2D& pos) const
 	return pHere->art();
 }
 
+bool Board::kingInCheck(bool col)
+{
+	whitesTurn_ = !whitesTurn_;
+	for (shared_ptr<Piece> p : (col == true ? blackPieces_ : whitePieces_))
+	{
+		Move checkMove(p->pos(), col == true ? whiteKing->pos() : blackKing->pos());
+		checkMove.setIntention(findIntention(checkMove));
+		if (isValidMove(checkMove))
+		{
+			whitesTurn_ = !whitesTurn_;
+			return true;
+		}
+	}
+
+	whitesTurn_ = !whitesTurn_;
+	return false;
+}
+
 void Board::movePiece(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
@@ -98,18 +116,38 @@ void Board::movePiece(const Move& move)
 		setPiece(move.dest() + Pos2D(0, move.intention() == 3 ? 1 : -1), targetRook);
 	}
 	
-	//whitesTurn_ = !whitesTurn_;
+	whitesTurn_ = !whitesTurn_;
 }
 
 bool Board::isValidMove(const Move& move)
 {
+	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	bool pieceColor = pieceHere->isWhite();
+
+	if (pieceColor != whitesTurn_)
+		return false;
+
 	if (move.intention() == 255)
 		return false;
 
-	if (pieceAt(move.src())->isWhite() != whitesTurn_)
+	if (!pieceAt(move.src())->isValidMove(move))
 		return false;
-	
-	return pieceAt(move.src())->isValidMove(move);
+
+	if (kingInCheck(pieceColor))
+	{
+		// try the move, see if we're still in check afterwards
+		setPiece(move.dest(), pieceHere);
+		setPiece(move.src(), nullptr);
+
+		bool inCheck = kingInCheck(pieceColor);
+		setPiece(move.src(), pieceHere);
+		setPiece(move.dest(), nullptr);
+
+		if (inCheck)
+			return false;
+	}
+
+	return true;
 }
 
 void Board::setPlayingAsWhite(bool asWhite)
