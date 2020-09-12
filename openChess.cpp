@@ -44,4 +44,6 @@ int main()
         std::cout << "Game ended because of unknown cause\n";
         break;
     }
+
+    std::cout << g_board;
 }
