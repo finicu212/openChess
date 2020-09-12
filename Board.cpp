@@ -318,8 +318,20 @@ uint8_t Board::gameOver()
 	
 		if (checkMate)
 		{
-			return 1;
+			// go through all pieces and see if we can block the check.
+			// Expensive, so only do this if cant run with king
+
+			for (shared_ptr<Piece> p : whitesTurn_ ? whitePieces_ : blackPieces_)
+			{
+				if (canBlock(attacker, p, whitesTurn_ ? whiteKing->pos() : blackKing->pos()))
+				{
+					checkMate = false;
+				}
+			}
 		}
+
+		if (checkMate)
+			return 1;
 	}
 
 
