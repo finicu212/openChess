@@ -3,9 +3,11 @@ C++ console chess
 
 Update on development status as of 2020-09-12:
 
-openChess is now pretty much regular chess. game will end on checkmate, although the algorithm to check if the current check can be blocked is a bit inefficient.
+openChess is now pretty much regular chess. game will end on checkmate. Added castling as a move as well.
 
-Added castling as a move as well
+Fool's mate:
+
+![fool's mate example pic](https://i.imgur.com/WPnVf3P.png)
 
 to be added:
 
