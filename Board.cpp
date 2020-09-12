@@ -312,6 +312,40 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 			}
 		}
 	}
+
+	if (attackerMoveDelta.x == 0)
+	{
+		// we're trying to block a vertical rook-like attack here
+		for (int i = sgn(attackerMoveDelta.y); abs(i) < abs(attackerMoveDelta.y); i += sgn(attackerMoveDelta.y))
+		{
+			Pos2D blockedSquare(posToBlock.x, posToBlock.y + i);
+			Move blockingMove = Move(blocker->pos(), blockedSquare);
+			captureMove.setIntention(findIntention(captureMove));
+
+			if (isValidMove(blockingMove))
+			{
+				return true;
+			}
+		}
+	}
+
+	if (attackerMoveDelta.y == 0)
+	{
+		// we're trying to block a horizontal rook-like attack here
+		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
+		{
+			Pos2D blockedSquare(posToBlock.x + i, posToBlock.y);
+			Move blockingMove = Move(blocker->pos(), blockedSquare);
+			captureMove.setIntention(findIntention(captureMove));
+
+			if (isValidMove(blockingMove))
+			{
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 uint8_t Board::gameOver()
