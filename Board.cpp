@@ -144,6 +144,8 @@ bool Board::isValidMove(const Move& move)
 		setPiece(move.src(), pieceHere);
 		setPiece(move.dest(), pieceThere);
 
+		std::cout << (inCheck ? "bruh still in check\n" : "can fix check\n");
+
 		if (inCheck)
 			return false;
 	}
@@ -298,25 +300,20 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 	}
 
 	Pos2D attackerMoveDelta = posToBlock - target->pos();
-	std::cout << "Delta: " << (int) attackerMoveDelta.x << ", " << (int) attackerMoveDelta.y << '\n';
 
 	if (attackerMoveDelta.x == attackerMoveDelta.y)
 	{
-		std::cout << "Blocking a bishop\n";
 		// we're trying to block a bishop here
 		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
 		{
 			Pos2D blockedSquare(posToBlock.x - i, posToBlock.y - i);
 			Move blockingMove = Move(blocker->pos(), blockedSquare);
-			captureMove.setIntention(findIntention(captureMove));
+			blockingMove.setIntention(findIntention(blockingMove));
 
 			if (isValidMove(blockingMove))
 			{
-				std::cout << blocker->art() << " can block!\n";
 				return true;
 			}
-
-			std::cout << blocker->art() << " couldn't block the square " << (int) blockedSquare.x << ", " << (int) blockedSquare.y << "\n";
 		}
 	}
 
@@ -327,7 +324,7 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 		{
 			Pos2D blockedSquare(posToBlock.x, posToBlock.y + i);
 			Move blockingMove = Move(blocker->pos(), blockedSquare);
-			captureMove.setIntention(findIntention(captureMove));
+			blockingMove.setIntention(findIntention(blockingMove));
 
 			if (isValidMove(blockingMove))
 			{
@@ -343,7 +340,7 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 		{
 			Pos2D blockedSquare(posToBlock.x + i, posToBlock.y);
 			Move blockingMove = Move(blocker->pos(), blockedSquare);
-			captureMove.setIntention(findIntention(captureMove));
+			blockingMove.setIntention(findIntention(blockingMove));
 
 			if (isValidMove(blockingMove))
 			{
