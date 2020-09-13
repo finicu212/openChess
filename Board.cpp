@@ -7,6 +7,45 @@ shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 	return board_[pos.x][pos.y];
 }
 
+shared_ptr<King> Board::king(bool coloredWhite)
+{
+	if (coloredWhite)
+		return whiteKing_;
+
+	return blackKing_;
+}
+
+vector<shared_ptr<Piece>> Board::pieces(bool coloredWhite)
+{
+	if (coloredWhite)
+		return whitePieces_;
+
+	return blackPieces_;
+}
+
+void Board::delPiece(const shared_ptr<Piece>& piece)
+{
+	if (piece == nullptr)
+		return;
+
+	if (piece->isWhite())
+		for (uint8_t i = 0; i < whitePieces_.size(); i++)
+		{
+			if (whitePieces_[i] == piece)
+			{
+				whitePieces_.erase(whitePieces_.begin() + i);
+			}
+		}
+	else
+		for (uint8_t i = 0; i < blackPieces_.size(); i++)
+		{
+			if (blackPieces_[i] == piece)
+			{
+				blackPieces_.erase(blackPieces_.begin() + i);
+			}
+		}
+}
+
 void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 {
 	board_[pos.x][pos.y] = piece;
@@ -45,9 +84,9 @@ std::string Board::getArtAt(const Pos2D& pos) const
 shared_ptr<Piece> Board::kingInCheck(bool col)
 {
 	whitesTurn_ = !whitesTurn_;
-	for (shared_ptr<Piece> p : (col == true ? blackPieces_ : whitePieces_))
+	for (shared_ptr<Piece> p : pieces(!col))
 	{
-		Move checkMove(p->pos(), col == true ? whiteKing->pos() : blackKing->pos());
+		Move checkMove(p->pos(), king(col)->pos());
 		checkMove.setIntention(findIntention(checkMove));
 		if (isValidMove(checkMove))
 		{
@@ -72,23 +111,7 @@ void Board::movePiece(const Move& move)
 	setPiece(move.src(), nullptr);
 
 	// remove from our vectors if we captured
-	if (pieceThere != nullptr)
-		if (pieceThere->isWhite())
-			for (uint8_t i = 0; i < whitePieces_.size(); i++)
-			{
-				if (whitePieces_[i] == pieceThere)
-				{
-					whitePieces_.erase(whitePieces_.begin() + i);
-				}
-			}
-		else
-			for (uint8_t i = 0; i < blackPieces_.size(); i++)
-			{
-				if (blackPieces_[i] == pieceThere)
-				{
-					blackPieces_.erase(blackPieces_.begin() + i);
-				}
-			}
+	delPiece(pieceThere);
 
 	//			--- SPECIAL MOVES ---
 	// Pawn promotion
@@ -96,25 +119,12 @@ void Board::movePiece(const Move& move)
 	{
 		shared_ptr<Piece> promotedPiece = make_shared<Queen>(pieceHere->isWhite());
 		setPiece(move.dest(), promotedPiece);
+		delPiece(pieceHere);
 
 		if (promotedPiece->isWhite())
-		{
-			for (int i = 0; i < whitePieces_.size(); i++)
-				if (whitePieces_[i] == promotedPiece)
-				{
-					whitePieces_.erase(whitePieces_.begin() + i);
-				}
 			whitePieces_.push_back(promotedPiece);
-		}
 		else
-		{
-			for (int i = 0; i < blackPieces_.size(); i++)
-				if (blackPieces_[i] == promotedPiece)
-				{
-					blackPieces_.erase(blackPieces_.begin() + i);
-				}
 			blackPieces_.push_back(promotedPiece);
-		}
 	}
 
 	// Castling
@@ -132,12 +142,13 @@ bool Board::isValidMove(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
 	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
+	
+	if (move.intention() == 255)
+		return false;
+
 	bool pieceColor = pieceHere->isWhite();
 
 	if (pieceColor != whitesTurn_)
-		return false;
-
-	if (move.intention() == 255)
 		return false;
 
 	if (!pieceAt(move.src())->isValidMove(move))
@@ -147,7 +158,7 @@ bool Board::isValidMove(const Move& move)
 	{
 		// try the move, see if we're still in check afterwards
 		setPiece(move.dest(), pieceHere);
-		setPiece(move.src(), pieceThere);
+		setPiece(move.src(), nullptr);
 
 		bool inCheck = (kingInCheck(pieceColor) != nullptr);
 		setPiece(move.src(), pieceHere);
@@ -189,7 +200,7 @@ uint8_t Board::findIntention(const Move& move)
 		return 255;
 
 	// is castling?
-	if ((pieceHere == whiteKing || pieceHere == blackKing) &&
+	if ((pieceHere == whiteKing_ || pieceHere == blackKing_) &&
 		(moveDelta.abs() == Pos2D(0, 2)) &&
 		(!pieceHere->hasMoved()))
 	{
@@ -217,24 +228,11 @@ uint8_t Board::findIntention(const Move& move)
 		for (int i = 0; abs(i) < (abs(distRook.y) + 1); i += sgn(distRook.y))
 		{
 			Pos2D posHere = Pos2D(move.src().x, move.src().y + i);
-			if (pieceHere->isWhite())
+			for (auto p : pieces(!pieceHere->isWhite()))
 			{
-				for (auto p : blackPieces_)
+				if (isValidMove(Move(p->pos(), posHere)))
 				{
-					if (isValidMove(Move(p->pos(), posHere)))
-					{
-						validCastle = false;
-					}
-				}
-			}
-			else
-			{
-				for (auto p : whitePieces_)
-				{
-					if (isValidMove(Move(p->pos(), posHere)))
-					{
-						validCastle = false;
-					}
+					validCastle = false;
 				}
 			}
 		}
@@ -373,7 +371,7 @@ uint8_t Board::gameOver()
 		{
 			for (int8_t dy = -1; dy <= 1; dy++)
 			{
-				Pos2D kingPos = whitesTurn_ ? whiteKing->pos() : blackKing->pos();
+				Pos2D kingPos = king(whitesTurn_)->pos();
 				Pos2D runPos = Pos2D(dx, dy) + kingPos;
 
 				// out of bounds
@@ -394,9 +392,9 @@ uint8_t Board::gameOver()
 			// go through all pieces and see if we can block the check.
 			// Expensive, so only do this if cant run with king
 
-			for (shared_ptr<Piece> p : whitesTurn_ ? whitePieces_ : blackPieces_)
+			for (shared_ptr<Piece> p : pieces(whitesTurn_))
 			{
-				if (canBlock(attacker, p, whitesTurn_ ? whiteKing->pos() : blackKing->pos()))
+				if (canBlock(attacker, p, king(whitesTurn_)->pos()))
 				{
 					checkMate = false;
 				}
@@ -425,7 +423,7 @@ Board::Board()
 	board_[0][1] = make_shared<Knight>(true);
 	board_[0][2] = make_shared<Bishop>(true);
 	board_[0][3] = make_shared<Queen>(true);
-	board_[0][4] = whiteKing = make_shared<King>(true);
+	board_[0][4] = whiteKing_ = make_shared<King>(true);
 	board_[0][5] = make_shared<Bishop>(true);
 	board_[0][6] = make_shared<Knight>(true);
 	board_[0][7] = make_shared<Rook>(true);
@@ -447,7 +445,7 @@ Board::Board()
 	board_[7][1] = make_shared<Knight>(false);
 	board_[7][2] = make_shared<Bishop>(false);
 	board_[7][3] = make_shared<Queen>(false);
-	board_[7][4] = blackKing = make_shared<King>(false);
+	board_[7][4] = blackKing_ = make_shared<King>(false);
 	board_[7][5] = make_shared<Bishop>(false);
 	board_[7][6] = make_shared<Knight>(false);
 	board_[7][7] = make_shared<Rook>(false);
