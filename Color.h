@@ -4,20 +4,17 @@
 class Color
 {
 public:
+    /* source: https://en.wikipedia.org/wiki/ANSI_escape_code */
     enum Code {
-        FG_WHITE = 97,
-        FG_BLACK = 30,
-        FG_RED = 31,
-        FG_GREEN = 32,
-        FG_BLUE = 34,
-        FG_DEFAULT = 39,
-        BG_WHITE = 107,
-        BG_BLACK = 40,
-        BG_RED = 41,
-        BG_GREEN = 42,
-        BG_BLUE = 44,
-        BG_DEFAULT = 49,
-        BG_GRAY = 43,
+        FG_BLACK   = 30, BG_BLACK   = 40,
+        FG_RED     = 31, BG_RED     = 41,
+        FG_GREEN   = 32, BG_GREEN   = 42,
+        FG_BLUE    = 34, BG_BLUE    = 44,
+        FG_MAGENTA = 35, BG_MAGENTA = 45,
+        FG_CYAN    = 36, BG_CYAN    = 46,
+        FG_GRAY    = 90, BG_GRAY    = 100,
+        FG_YELLOW  = 93, BG_YELLOW  = 103,
+        FG_WHITE   = 97, BG_WHITE   = 107,
     };
 
     // Generates ANSI character sequence given a color and a bold boolean
