@@ -23,6 +23,17 @@ vector<shared_ptr<Piece>> Board::pieces(bool coloredWhite)
 	return blackPieces_;
 }
 
+void Board::addPiece(const shared_ptr<Piece>& piece)
+{
+	if (piece == nullptr)
+		return;
+
+	if (piece->isWhite())
+		whitePieces_.push_back(piece);
+	else
+		blackPieces_.push_back(piece);
+}
+
 void Board::delPiece(const shared_ptr<Piece>& piece)
 {
 	if (piece == nullptr)
@@ -119,12 +130,9 @@ void Board::movePiece(const Move& move)
 	{
 		shared_ptr<Piece> promotedPiece = make_shared<Queen>(pieceHere->isWhite());
 		setPiece(move.dest(), promotedPiece);
-		delPiece(pieceHere);
 
-		if (promotedPiece->isWhite())
-			whitePieces_.push_back(promotedPiece);
-		else
-			blackPieces_.push_back(promotedPiece);
+		delPiece(pieceHere);
+		addPiece(promotedPiece);
 	}
 
 	// Castling
@@ -459,10 +467,7 @@ Board::Board()
 			{
 				board_[i][j]->setPos({ i, j });
 
-				if (board_[i][j]->isWhite())
-					whitePieces_.push_back(board_[i][j]);
-				else
-					blackPieces_.push_back(board_[i][j]);
+				addPiece(board_[i][j]);
 			}
 		}
 	}

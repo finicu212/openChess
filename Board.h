@@ -19,6 +19,8 @@ public:
 
 	vector<shared_ptr<Piece>> pieces(bool coloredWhite);
 
+	void addPiece(const shared_ptr<Piece>& piece);
+
 	void delPiece(const shared_ptr<Piece>& piece);
 
 	void setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece);
