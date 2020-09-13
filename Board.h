@@ -17,6 +17,8 @@ public:
 
 	vector<shared_ptr<Piece>> pieces(bool coloredWhite);
 
+	void delPiece(const shared_ptr<Piece>& piece);
+
 	void setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece);
 
 	char getArtAt(const Pos2D& pos) const;

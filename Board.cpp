@@ -21,6 +21,29 @@ vector<shared_ptr<Piece>> Board::pieces(bool coloredWhite)
 	return blackPieces_;
 }
 
+void Board::delPiece(const shared_ptr<Piece>& piece)
+{
+	if (piece == nullptr)
+		return;
+
+	if (piece->isWhite())
+		for (uint8_t i = 0; i < whitePieces_.size(); i++)
+		{
+			if (whitePieces_[i] == piece)
+			{
+				whitePieces_.erase(whitePieces_.begin() + i);
+			}
+		}
+	else
+		for (uint8_t i = 0; i < blackPieces_.size(); i++)
+		{
+			if (blackPieces_[i] == piece)
+			{
+				blackPieces_.erase(blackPieces_.begin() + i);
+			}
+		}
+}
+
 void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 {
 	board_[pos.x][pos.y] = piece;
