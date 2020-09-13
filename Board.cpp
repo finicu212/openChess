@@ -102,23 +102,7 @@ void Board::movePiece(const Move& move)
 	setPiece(move.src(), nullptr);
 
 	// remove from our vectors if we captured
-	if (pieceThere != nullptr)
-		if (pieceThere->isWhite())
-			for (uint8_t i = 0; i < whitePieces_.size(); i++)
-			{
-				if (whitePieces_[i] == pieceThere)
-				{
-					whitePieces_.erase(whitePieces_.begin() + i);
-				}
-			}
-		else
-			for (uint8_t i = 0; i < blackPieces_.size(); i++)
-			{
-				if (blackPieces_[i] == pieceThere)
-				{
-					blackPieces_.erase(blackPieces_.begin() + i);
-				}
-			}
+	delPiece(pieceThere);
 
 	//			--- SPECIAL MOVES ---
 	// Pawn promotion
@@ -126,25 +110,12 @@ void Board::movePiece(const Move& move)
 	{
 		shared_ptr<Piece> promotedPiece = make_shared<Queen>(pieceHere->isWhite());
 		setPiece(move.dest(), promotedPiece);
+		delPiece(pieceHere);
 
 		if (promotedPiece->isWhite())
-		{
-			for (int i = 0; i < whitePieces_.size(); i++)
-				if (whitePieces_[i] == promotedPiece)
-				{
-					whitePieces_.erase(whitePieces_.begin() + i);
-				}
 			whitePieces_.push_back(promotedPiece);
-		}
 		else
-		{
-			for (int i = 0; i < blackPieces_.size(); i++)
-				if (blackPieces_[i] == promotedPiece)
-				{
-					blackPieces_.erase(blackPieces_.begin() + i);
-				}
 			blackPieces_.push_back(promotedPiece);
-		}
 	}
 
 	// Castling
