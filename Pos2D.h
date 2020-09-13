@@ -9,7 +9,7 @@ struct Pos2D
 
 	Pos2D(int8_t x, int8_t y);
 
-	inline bool outOfBounds() const;
+	static bool outOfBounds(const Pos2D& pos);
 
 	static Pos2D getPos2D(const std::string& posString);
 
