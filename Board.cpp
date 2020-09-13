@@ -148,7 +148,7 @@ bool Board::isValidMove(const Move& move)
 	{
 		// try the move, see if we're still in check afterwards
 		setPiece(move.dest(), pieceHere);
-		setPiece(move.src(), pieceThere);
+		setPiece(move.src(), nullptr);
 
 		bool inCheck = (kingInCheck(pieceColor) != nullptr);
 		setPiece(move.src(), pieceHere);
