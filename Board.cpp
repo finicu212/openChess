@@ -133,12 +133,13 @@ bool Board::isValidMove(const Move& move)
 {
 	shared_ptr<Piece> pieceHere = pieceAt(move.src());
 	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
+	
+	if (move.intention() == 255)
+		return false;
+
 	bool pieceColor = pieceHere->isWhite();
 
 	if (pieceColor != whitesTurn_)
-		return false;
-
-	if (move.intention() == 255)
 		return false;
 
 	if (!pieceAt(move.src())->isValidMove(move))
