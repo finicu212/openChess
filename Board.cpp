@@ -5,6 +5,14 @@ shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 	return board_[pos.x][pos.y];
 }
 
+shared_ptr<King> Board::king(bool coloredWhite)
+{
+	if (coloredWhite)
+		return whiteKing_;
+
+	return blackKing_;
+}
+
 void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 {
 	board_[pos.x][pos.y] = piece;
