@@ -46,7 +46,7 @@ shared_ptr<Piece> Board::kingInCheck(bool col)
 	whitesTurn_ = !whitesTurn_;
 	for (shared_ptr<Piece> p : (col == true ? blackPieces_ : whitePieces_))
 	{
-		Move checkMove(p->pos(), col == true ? whiteKing->pos() : blackKing->pos());
+		Move checkMove(p->pos(), king(col)->pos());
 		checkMove.setIntention(findIntention(checkMove));
 		if (isValidMove(checkMove))
 		{
@@ -188,7 +188,7 @@ uint8_t Board::findIntention(const Move& move)
 		return 255;
 
 	// is castling?
-	if ((pieceHere == whiteKing || pieceHere == blackKing) &&
+	if ((pieceHere == whiteKing_ || pieceHere == blackKing_) &&
 		(moveDelta.abs() == Pos2D(0, 2)) &&
 		(!pieceHere->hasMoved()))
 	{
@@ -372,7 +372,7 @@ uint8_t Board::gameOver()
 		{
 			for (int8_t dy = -1; dy <= 1; dy++)
 			{
-				Pos2D kingPos = whitesTurn_ ? whiteKing->pos() : blackKing->pos();
+				Pos2D kingPos = king(whitesTurn_)->pos();
 				Pos2D runPos = Pos2D(dx, dy) + kingPos;
 
 				// out of bounds
@@ -395,7 +395,7 @@ uint8_t Board::gameOver()
 
 			for (shared_ptr<Piece> p : whitesTurn_ ? whitePieces_ : blackPieces_)
 			{
-				if (canBlock(attacker, p, whitesTurn_ ? whiteKing->pos() : blackKing->pos()))
+				if (canBlock(attacker, p, king(whitesTurn_)->pos()))
 				{
 					checkMate = false;
 				}
@@ -424,7 +424,7 @@ Board::Board()
 	board_[0][1] = make_shared<Knight>(true);
 	board_[0][2] = make_shared<Bishop>(true);
 	board_[0][3] = make_shared<Queen>(true);
-	board_[0][4] = whiteKing = make_shared<King>(true);
+	board_[0][4] = whiteKing_ = make_shared<King>(true);
 	board_[0][5] = make_shared<Bishop>(true);
 	board_[0][6] = make_shared<Knight>(true);
 	board_[0][7] = make_shared<Rook>(true);
@@ -446,7 +446,7 @@ Board::Board()
 	board_[7][1] = make_shared<Knight>(false);
 	board_[7][2] = make_shared<Bishop>(false);
 	board_[7][3] = make_shared<Queen>(false);
-	board_[7][4] = blackKing = make_shared<King>(false);
+	board_[7][4] = blackKing_ = make_shared<King>(false);
 	board_[7][5] = make_shared<Bishop>(false);
 	board_[7][6] = make_shared<Knight>(false);
 	board_[7][7] = make_shared<Rook>(false);
