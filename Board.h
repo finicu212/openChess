@@ -15,6 +15,12 @@ class Board
 public:
 	shared_ptr<Piece> pieceAt(const Pos2D& pos) const;
 
+	shared_ptr<King> king(bool coloredWhite);
+
+	vector<shared_ptr<Piece>> pieces(bool coloredWhite);
+
+	void delPiece(const shared_ptr<Piece>& piece);
+
 	void setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece);
 
 	std::string getArtAt(const Pos2D& pos) const;
