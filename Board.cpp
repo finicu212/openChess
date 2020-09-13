@@ -1,4 +1,6 @@
 #include "Board.h"
+#include "Color.h"
+#include <string>
 
 shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 {
@@ -55,21 +57,28 @@ void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 	}
 }
 
-char Board::getArtAt(const Pos2D& pos) const
+std::string Board::getArtAt(const Pos2D& pos) const
 {
 	shared_ptr<Piece> pHere = pieceAt(pos);
+
+	// if i + j is even, then it's a shaded square
+	bool isShadedSquare = (pos.x + pos.y) % 2 == 0;
+	std::string c;
+	c += isShadedSquare ? black_bg_ : white_bg_;
 
 	// no piece here
 	if (pHere == nullptr)
 	{
-		// if i + j is even, then it's a shaded square
-		bool isShadedSquare = (pos.x + pos.y) % 2 == 0;
-
-		// print . if it's shaded
-		return isShadedSquare ? '.' : ' ';
+		return c += "   " + Color::end();
 	}
 
-	return pHere->art();
+	if (pHere->isWhite() && isShadedSquare)
+		c += white_black_bg_;
+	else if (pHere->isWhite())
+		c += white_white_bg_;
+
+	c += " " + std::string(1, pHere->art()) + " " + Color::end();
+	return c;
 }
 
 shared_ptr<Piece> Board::kingInCheck(bool col)
@@ -468,10 +477,13 @@ std::ostream& operator<<(std::ostream& os, const Board& b)
 	{
 		int currIndex = b.playingAsWhite_ ? (8 - i) : (i + 1);
 		os << currIndex << " ";
+
 		for (uint8_t j = 0; j < 8; j++)
 		{
-			os << "| " << b.getArtAt( Pos2D(b.playingAsWhite_ ? (7 - i) : i, j) ) << " ";
+			std::string art = b.getArtAt(Pos2D(b.playingAsWhite_ ? (7 - i) : i, j));
+			os << "|" << art << "";
 		}
+
 		os << "| " << currIndex << '\n';
 		os << "  +---+---+---+---+---+---+---+---+\n";
 	}
