@@ -2,7 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <memory>
+#include <string>
 #include "Piece.h"
+#include "Color.h"
 
 using std::vector;
 using std::make_shared;
@@ -15,7 +17,7 @@ public:
 
 	void setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece);
 
-	char getArtAt(const Pos2D& pos) const;
+	std::string getArtAt(const Pos2D& pos) const;
 
 	// returns piece that attacks king
 	shared_ptr<Piece> kingInCheck(bool col);
@@ -44,5 +46,11 @@ private:
 	vector<vector<shared_ptr<Piece>>> board_;
 	vector<shared_ptr<Piece>> whitePieces_, blackPieces_;
 	shared_ptr<King> whiteKing, blackKing;
-	bool playingAsWhite_ = true, whitesTurn_ = true;;
+	bool playingAsWhite_ = true, whitesTurn_ = true;
+
+	const std::string white_bg_ = Color::ANSI(Color::FG_BLACK, Color::BG_WHITE, true);
+	const std::string black_bg_ = Color::ANSI(Color::FG_WHITE, Color::BG_BLACK, true);
+
+	const std::string white_white_bg_ = Color::ANSI(Color::FG_BLUE, Color::BG_WHITE, true);
+	const std::string white_black_bg_ = Color::ANSI(Color::FG_BLUE, Color::BG_BLACK, true);
 };
