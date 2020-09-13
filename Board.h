@@ -54,9 +54,9 @@ private:
 	shared_ptr<King> whiteKing_, blackKing_;
 	bool playingAsWhite_ = true, whitesTurn_ = true;
 
-	const std::string white_bg_ = Color::ANSI(Color::FG_BLACK, Color::BG_WHITE, true);
-	const std::string black_bg_ = Color::ANSI(Color::FG_WHITE, Color::BG_BLACK, true);
+	const std::string white_bg_ = Color::ANSI(Color::FG_BLUE, Color::BG_WHITE, false);
+	const std::string black_bg_ = Color::ANSI(Color::FG_BLUE, Color::BG_GRAY, false);
 
-	const std::string white_white_bg_ = Color::ANSI(Color::FG_BLUE, Color::BG_WHITE, true);
-	const std::string white_black_bg_ = Color::ANSI(Color::FG_BLUE, Color::BG_BLACK, true);
+	const std::string white_white_bg_ = Color::ANSI(Color::FG_GRAY, Color::BG_WHITE, false);
+	const std::string white_black_bg_ = Color::ANSI(Color::FG_WHITE, Color::BG_GRAY, false);
 };
