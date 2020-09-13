@@ -51,7 +51,7 @@ public:
 private:
 	vector<vector<shared_ptr<Piece>>> board_;
 	vector<shared_ptr<Piece>> whitePieces_, blackPieces_;
-	shared_ptr<King> whiteKing, blackKing;
+	shared_ptr<King> whiteKing_, blackKing_;
 	bool playingAsWhite_ = true, whitesTurn_ = true;
 
 	const std::string white_bg_ = Color::ANSI(Color::FG_BLACK, Color::BG_WHITE, true);
