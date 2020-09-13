@@ -13,6 +13,12 @@ class Board
 public:
 	shared_ptr<Piece> pieceAt(const Pos2D& pos) const;
 
+	shared_ptr<King> king(bool coloredWhite);
+
+	vector<shared_ptr<Piece>> pieces(bool coloredWhite);
+
+	void delPiece(const shared_ptr<Piece>& piece);
+
 	void setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece);
 
 	char getArtAt(const Pos2D& pos) const;
@@ -43,6 +49,6 @@ public:
 private:
 	vector<vector<shared_ptr<Piece>>> board_;
 	vector<shared_ptr<Piece>> whitePieces_, blackPieces_;
-	shared_ptr<King> whiteKing, blackKing;
+	shared_ptr<King> whiteKing_, blackKing_;
 	bool playingAsWhite_ = true, whitesTurn_ = true;;
 };
