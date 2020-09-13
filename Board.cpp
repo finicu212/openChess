@@ -52,7 +52,7 @@ char Board::getArtAt(const Pos2D& pos) const
 shared_ptr<Piece> Board::kingInCheck(bool col)
 {
 	whitesTurn_ = !whitesTurn_;
-	for (shared_ptr<Piece> p : (col == true ? blackPieces_ : whitePieces_))
+	for (shared_ptr<Piece> p : pieces(!col))
 	{
 		Move checkMove(p->pos(), king(col)->pos());
 		checkMove.setIntention(findIntention(checkMove));
@@ -224,24 +224,11 @@ uint8_t Board::findIntention(const Move& move)
 		for (int i = 0; abs(i) < (abs(distRook.y) + 1); i += sgn(distRook.y))
 		{
 			Pos2D posHere = Pos2D(move.src().x, move.src().y + i);
-			if (pieceHere->isWhite())
+			for (auto p : pieces(!pieceHere->isWhite()))
 			{
-				for (auto p : blackPieces_)
+				if (isValidMove(Move(p->pos(), posHere)))
 				{
-					if (isValidMove(Move(p->pos(), posHere)))
-					{
-						validCastle = false;
-					}
-				}
-			}
-			else
-			{
-				for (auto p : whitePieces_)
-				{
-					if (isValidMove(Move(p->pos(), posHere)))
-					{
-						validCastle = false;
-					}
+					validCastle = false;
 				}
 			}
 		}
@@ -401,7 +388,7 @@ uint8_t Board::gameOver()
 			// go through all pieces and see if we can block the check.
 			// Expensive, so only do this if cant run with king
 
-			for (shared_ptr<Piece> p : whitesTurn_ ? whitePieces_ : blackPieces_)
+			for (shared_ptr<Piece> p : pieces(whitesTurn_))
 			{
 				if (canBlock(attacker, p, king(whitesTurn_)->pos()))
 				{
