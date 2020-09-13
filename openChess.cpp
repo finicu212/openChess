@@ -23,7 +23,15 @@ int main()
             std::cin >> plyMoveSrc >> plyMoveDest;
 
             move = Move::getMove(plyMoveSrc, plyMoveDest);
-            move.setIntention(g_board.findIntention(move));
+            if (Move::outOfBounds(move))
+            {
+                move.setIntention(255);
+            }
+            else
+            {
+                move.setIntention(g_board.findIntention(move));
+            }
+
         } while (!g_board.isValidMove(move));
 
         g_board.movePiece(move);
