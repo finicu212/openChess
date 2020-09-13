@@ -13,6 +13,14 @@ shared_ptr<King> Board::king(bool coloredWhite)
 	return blackKing_;
 }
 
+vector<shared_ptr<Piece>> Board::pieces(bool coloredWhite)
+{
+	if (coloredWhite)
+		return whitePieces_;
+
+	return blackPieces_;
+}
+
 void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
 {
 	board_[pos.x][pos.y] = piece;
