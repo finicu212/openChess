@@ -140,11 +140,11 @@ void Board::movePiece(const Move& move)
 
 bool Board::isValidMove(const Move& move)
 {
-	shared_ptr<Piece> pieceHere = pieceAt(move.src());
-	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
-	
 	if (move.intention() == 255)
 		return false;
+
+	shared_ptr<Piece> pieceHere = pieceAt(move.src());
+	shared_ptr<Piece> pieceThere = pieceAt(move.dest());
 
 	bool pieceColor = pieceHere->isWhite();
 

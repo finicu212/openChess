@@ -6,7 +6,10 @@ class Move
 {
 public:
 	Move();
+	
 	Move(const Pos2D& org, const Pos2D& destination);
+
+	static bool outOfBounds(const Move& move);
 
 	/// <summary>
 	/// Takes two strings and outputs readable data

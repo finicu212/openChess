@@ -4,6 +4,11 @@ Pos2D::Pos2D() : x(0), y(0) {};
 
 Pos2D::Pos2D(int8_t x, int8_t y) : x(x), y(y) {};
 
+bool Pos2D::outOfBounds(const Pos2D& pos)
+{
+	return (pos.x < 0 || pos.x > 7 || pos.y < 0 || pos.y > 7);
+}
+
 Pos2D Pos2D::getPos2D(const std::string& posString)
 {
 	Pos2D newPos;

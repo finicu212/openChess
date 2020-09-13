@@ -4,6 +4,11 @@ Move::Move() {};
 
 Move::Move(const Pos2D& org, const Pos2D& destination) : src_(org), dest_(destination) {}
 
+bool Move::outOfBounds(const Move& move)
+{
+	return (Pos2D::outOfBounds(move.src_) || Pos2D::outOfBounds(move.dest_));
+}
+
 Pos2D Move::src() const
 {
 	return src_;
