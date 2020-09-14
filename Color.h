@@ -19,7 +19,11 @@ public:
 
     // Generates ANSI character sequence given a color and a bold boolean
     static std::string ANSI(Code fg, Color::Code bg, bool bold);
+
+    // Generates ANSI character sequence given a color, always non-bold
     static std::string ANSI(Color::Code fg, Color::Code bg);
+
+    // Returns ANSI RESET character sequence
     static std::string end();
 
 private:
