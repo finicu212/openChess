@@ -479,7 +479,7 @@ Board::Board()
 
 std::ostream& operator<<(std::ostream& os, const Board& b)
 {
-	os << "   A  B  C  D  E  F  G  H\n";
+	os << "\n   A  B  C  D  E  F  G  H\n";
 
 	for (uint8_t i = 0; i < 8; i++)
 	{

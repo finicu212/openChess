@@ -19,7 +19,7 @@ int main()
         do
         {
             std::string plyMoveSrc, plyMoveDest;
-            std::cout << "Enter valid move for " << (g_board.whitesTurn() ? "white" : "black") << " (src_square dest_square):";
+            std::cout << (g_board.whitesTurn() ? "white's" : "black's") << " move (src dest):";
             std::cin >> plyMoveSrc >> plyMoveDest;
 
             move = Move::getMove(plyMoveSrc, plyMoveDest);
