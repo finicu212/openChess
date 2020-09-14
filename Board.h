@@ -69,7 +69,7 @@ public:
 	uint8_t findIntention(const Move& move);
 
 	// check if blocker piece can capture target, or has a valid move between target and posToBlock. 
-	bool canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D posToBlock);
+	bool canBlock(const Move& moveToBlock, const shared_ptr<Piece>& blocker);
 
 	// find reason the game ended.
 	// 0 - game still ongoing

@@ -306,9 +306,9 @@ uint8_t Board::findIntention(const Move& move)
 	// TODO: 4 for en passant pawn capture.
 }
 
-bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D posToBlock)
+bool Board::canBlock(const Move& moveToBlock, const shared_ptr<Piece>& blocker)
 {
-	Move captureMove = Move(blocker->pos(), target->pos());
+	Move captureMove = Move(blocker->pos(), moveToBlock.src());
 	captureMove.setIntention(findIntention(captureMove));
 	if (isValidMove(captureMove))
 	{
@@ -316,14 +316,14 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 		return true;
 	}
 
-	Pos2D attackerMoveDelta = posToBlock - target->pos();
+	Pos2D attackerMoveDelta = moveToBlock.dest() - moveToBlock.src();
 
 	if (attackerMoveDelta.x == attackerMoveDelta.y)
 	{
 		// we're trying to block a bishop here
 		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
 		{
-			Pos2D blockedSquare(posToBlock.x - i, posToBlock.y - i);
+			Pos2D blockedSquare(moveToBlock.dest().x - i, moveToBlock.dest().y - i);
 			Move blockingMove = Move(blocker->pos(), blockedSquare);
 			blockingMove.setIntention(findIntention(blockingMove));
 
@@ -339,7 +339,7 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 		// we're trying to block a vertical rook-like attack here
 		for (int i = sgn(attackerMoveDelta.y); abs(i) < abs(attackerMoveDelta.y); i += sgn(attackerMoveDelta.y))
 		{
-			Pos2D blockedSquare(posToBlock.x, posToBlock.y + i);
+			Pos2D blockedSquare(moveToBlock.dest().x, moveToBlock.dest().y + i);
 			Move blockingMove = Move(blocker->pos(), blockedSquare);
 			blockingMove.setIntention(findIntention(blockingMove));
 
@@ -355,7 +355,7 @@ bool Board::canBlock(shared_ptr<Piece> target, shared_ptr<Piece> blocker, Pos2D 
 		// we're trying to block a horizontal rook-like attack here
 		for (int i = sgn(attackerMoveDelta.x); abs(i) < abs(attackerMoveDelta.x); i += sgn(attackerMoveDelta.x))
 		{
-			Pos2D blockedSquare(posToBlock.x + i, posToBlock.y);
+			Pos2D blockedSquare(moveToBlock.dest().x + i, moveToBlock.dest().y);
 			Move blockingMove = Move(blocker->pos(), blockedSquare);
 			blockingMove.setIntention(findIntention(blockingMove));
 
@@ -406,7 +406,7 @@ uint8_t Board::gameOver()
 
 			for (shared_ptr<Piece> p : pieces(whitesTurn_))
 			{
-				if (canBlock(attacker, p, king(whitesTurn_)->pos()))
+				if (canBlock(Move(attacker->pos(), king(whitesTurn_)->pos()), p))
 				{
 					checkMate = false;
 				}
