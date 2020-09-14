@@ -7,6 +7,17 @@ shared_ptr<Piece> Board::pieceAt(const Pos2D& pos) const
 	return board_[pos.x][pos.y];
 }
 
+void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
+{
+	board_[pos.x][pos.y] = piece;
+
+	if (piece != nullptr)
+	{
+		piece->setPos(pos);
+		piece->setHasMoved(true);
+	}
+}
+
 shared_ptr<King> Board::king(bool coloredWhite)
 {
 	if (coloredWhite)
@@ -55,17 +66,6 @@ void Board::delPiece(const shared_ptr<Piece>& piece)
 				blackPieces_.erase(blackPieces_.begin() + i);
 			}
 		}
-}
-
-void Board::setPiece(const Pos2D& pos, const shared_ptr<Piece>& piece)
-{
-	board_[pos.x][pos.y] = piece;
-
-	if (piece != nullptr)
-	{
-		piece->setPos(pos);
-		piece->setHasMoved(true);
-	}
 }
 
 std::string Board::getArtAt(const Pos2D& pos) const
@@ -207,7 +207,8 @@ uint8_t Board::findIntention(const Move& move)
 	if (pieceHere == nullptr)
 		return 255;
 
-	// is castling?
+	// --- CASTLING ---
+
 	if ((pieceHere == whiteKing_ || pieceHere == blackKing_) &&
 		(moveDelta.abs() == Pos2D(0, 2)) &&
 		(!pieceHere->hasMoved()))
@@ -254,6 +255,8 @@ uint8_t Board::findIntention(const Move& move)
 		}
 	}
 
+	/// --- PIECE JUMPING --- 
+
 	// bishop-like movement
 	if (moveDelta.x == moveDelta.y)
 	{
@@ -290,14 +293,15 @@ uint8_t Board::findIntention(const Move& move)
 		}
 	}
 
+	// --- SIMPLE MOVES ---
+
 	if (pieceAt(move.dest()) == nullptr)
 		return 0; // standard move
 
-	// can't move on friendly pieces
-	if (pieceHere->isWhite() == pieceAt(move.dest())->isWhite())
-		return 255;
-	else
+	if (pieceHere->isWhite() != pieceAt(move.dest())->isWhite())
 		return 1; // capturing move
+
+	return 255; // invalid move
 
 	// TODO: 4 for en passant pawn capture.
 }
