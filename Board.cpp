@@ -395,6 +395,7 @@ uint8_t Board::gameOver()
 				if (isValidMove(runMove))
 				{
 					checkMate = false;
+					break;
 				}
 			}
 		}
@@ -409,6 +410,7 @@ uint8_t Board::gameOver()
 				if (canBlock(Move(attacker->pos(), king(whitesTurn_)->pos()), p))
 				{
 					checkMate = false;
+					break;
 				}
 			}
 		}
