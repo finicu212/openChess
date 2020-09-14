@@ -83,6 +83,7 @@ bool Pawn::canPromote()
 
 bool Rook::isValidMove(const Move& move)
 {
+	// rook tried jumping over a piece
 	if (move.intention() == 253)
 		return false;
 
@@ -119,11 +120,11 @@ bool Queen::isValidMove(const Move& move)
 
 bool King::isValidMove(const Move& move)
 {
-	Pos2D moveDelta = (move.dest() - move.src()).abs();
-
+	// is king castling?
 	if (move.intention() == 2 || move.intention() == 3)
 		return true;
 
+	Pos2D moveDelta = (move.dest() - move.src()).abs();
 	return moveDelta.x < 2 && moveDelta.y < 2;
 }
 
